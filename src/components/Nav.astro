@@ -1,10 +1,10 @@
 ---
-import { city } from "../state"
+import { city } from "../state";
 ---
 
 <div id="navbar">
   <a href="/">
-  <img src="/logo-transparent.png" id="logo" alt="nova-logo" />
+    <img src="/logo-transparent.png" id="logo" alt="nova-logo" />
   </a>
   <div id="nav-right">
     <button>Team</button>
@@ -28,7 +28,6 @@ import { city } from "../state"
 
   document.querySelectorAll<HTMLButtonElement>("[data-city]").forEach((btn) => {
     btn.addEventListener("click", () => {
-
       city.set(btn.dataset.city! as City);
       label.textContent = city.get();
     });
@@ -58,7 +57,7 @@ import { city } from "../state"
   }
 
   #nav-right button {
-    background-color: #4152C8;
+    background-color: #4152c8;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -72,7 +71,7 @@ import { city } from "../state"
 
   #city-label {
     display: block;
-    background-color: #4152C8;
+    background-color: #4152c8;
     color: white;
     padding: 8px 16px;
     border-radius: 4px;
@@ -87,7 +86,7 @@ import { city } from "../state"
     right: 0;
     display: none;
     position: absolute;
-    background-color: #4152C8;
+    background-color: #4152c8;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   }
 
