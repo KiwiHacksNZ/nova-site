@@ -1,4 +1,4 @@
-# Astro Starter Kit: Basics
+# KiwiHacks Nova Site
 
 ```sh
 bun create astro@latest -- --template basics
