@@ -6,9 +6,15 @@ import { city } from "../state";
   <a href="/">
     <img src="/logo-transparent.png" id="logo" alt="nova-logo" />
   </a>
+
   <div id="nav-right">
     <button>Team</button>
     <button>FAQ</button>
+
+    {
+      // this div is the dropdown for city selection (set using CSS)
+    }
+
     <div id="city-dropdown">
       <p id="city-label">{city.get()}</p>
       <div id="dropdown-content">
