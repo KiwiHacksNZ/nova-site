@@ -19,4 +19,3 @@ bun dev # runs on http://localhost:4321
 ```bash
 bun format
 ```
-
