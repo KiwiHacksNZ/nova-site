@@ -1,6 +1,6 @@
-# Nova by KiwiHacks
+# KiwiHacks Nova
 
-Marketing site for KiwiHacks Nova, New Zealand's first high school hackathon national tour. Three cities, three free 24 hour hackathons.
+The site for KiwiHacks Nova, New Zealand's first high school hackathon national tour. Three cities, three free 24 hour hackathons.
 
 Built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com) (v4 via the `@tailwindcss/vite` plugin).
 
