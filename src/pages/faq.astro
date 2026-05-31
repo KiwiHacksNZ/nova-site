@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import NovaLogo from "../components/NovaLogo.astro";
 type Faq = { q: string; a: string };
 
 const FAQ_ITEMS: Faq[] = [
@@ -57,14 +56,13 @@ const FAQ_ITEMS: Faq[] = [
       Back
     </a>
 
-    {/* Logo + FAQ heading */}
+    {/* FAQ heading */}
     <div
       class="mt-8 flex flex-wrap items-center justify-center gap-6 sm:justify-start"
     >
-      <div class="flex flex-col items-center">
-        <NovaLogo class="h-20 sm:h-28" />
-      </div>
-      <h1 class="text-5xl font-semibold text-white sm:text-7xl">FAQ</h1>
+      <h1 class="text-5xl font-semibold text-white sm:text-7xl">
+        KiwiHacks Nova FAQ
+      </h1>
     </div>
 
     {/* 2-column card grid (stacks on mobile) */}
