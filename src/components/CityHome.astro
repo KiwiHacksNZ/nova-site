@@ -8,6 +8,15 @@ interface Props {
 }
 
 const { city } = Astro.props;
+
+const galleryImages = [
+  "/images/DSCF3841.jpg",
+  "/images/DSCF4012.jpg",
+  "/images/DSCF2200.jpg",
+  "/images/DSCF3768.jpg",
+  "/images/DSCF3771.jpg",
+  "/images/DSCF7194.jpg",
+];
 ---
 
 <div
@@ -15,10 +24,10 @@ const { city } = Astro.props;
 >
   {/* 1. Big centered Nova logo + By KiwiHacks (links to kiwihacks.org) */}
   <div class="flex flex-col items-center">
-    <NovaLogo class="h-28 sm:h-40" />
+    <NovaLogo class="h-40 sm:h-60" />
     <a
       href="https://kiwihacks.org"
-      class="-mt-6 self-end text-xl text-white/90 no-underline transition-colors hover:text-white sm:-mt-9 sm:mr-4"
+      class="-mt-9 self-end text-xl text-white/90 no-underline transition-colors hover:text-white sm:-mt-14 sm:mr-6"
     >
       By KiwiHacks
     </a>
@@ -88,11 +97,18 @@ const { city } = Astro.props;
     </div>
 
     {/* Photo gallery placeholders, swap for real event photos later. */}
-    <div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3">
+    <div
+      class="-mx-5 mt-12 flex snap-x gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 sm:pb-0"
+    >
       {
-        Array.from({ length: 6 }).map(() => (
-          <div class="flex aspect-[4/3] items-center justify-center rounded-2xl border-2 border-dashed border-white/15 bg-white/[0.02]">
-            <span class="text-sm text-white/35">Photo</span>
+        galleryImages.map((src, index) => (
+          <div class="aspect-[4/3] w-[82vw] shrink-0 snap-center overflow-hidden rounded-2xl shadow-lg ring-1 ring-white/10 sm:w-full">
+            <img
+              src={src}
+              alt="KiwiHacks event photo"
+              loading="lazy"
+              class={`h-full w-full object-cover ${index === galleryImages.length - 1 ? "origin-left scale-110 object-left" : ""}`}
+            />
           </div>
         ))
       }

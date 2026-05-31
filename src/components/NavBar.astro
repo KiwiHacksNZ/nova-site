@@ -14,39 +14,60 @@ const activeCity = cityBySlug(slug) ?? null;
 <!-- The bar plus its bright pink gradient underline strip. -->
 <header class="sticky top-0 z-50 w-full">
   <nav
-    class="flex w-full flex-wrap items-center justify-between gap-3 bg-[#161a3d] px-5 py-2.5 sm:px-8"
+    class="flex w-full flex-wrap items-center justify-between gap-3 bg-[#161a3d] px-4 py-3 sm:flex-nowrap sm:px-8 sm:py-2.5"
   >
     {/* Left: Nova wordmark, links home */}
     <a href="/" class="flex items-center gap-2 no-underline">
-      <NovaLogo class="h-8 sm:h-9" />
+      <NovaLogo class="h-12 sm:h-14" />
     </a>
 
+    <button
+      type="button"
+      data-mobile-menu-toggle
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#4f46e5] text-white transition-colors hover:bg-[#5b52ee] sm:hidden"
+    >
+      <span class="sr-only">Open menu</span>
+      <svg viewBox="0 0 24 24" fill="none" class="h-7 w-7" aria-hidden="true">
+        <path
+          d="M4 7h16M4 12h16M4 17h16"
+          stroke="white"
+          stroke-width="2.5"
+          stroke-linecap="round"></path>
+      </svg>
+    </button>
+
     {/* Right: Team, FAQ, Select City */}
-    <div class="flex items-center gap-2 sm:gap-3">
+    <div
+      id="mobile-menu"
+      data-mobile-menu
+      class="hidden w-full flex-col gap-2 rounded-2xl bg-white/5 p-2 ring-1 ring-white/10 sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-3 sm:bg-transparent sm:p-0 sm:ring-0"
+    >
       {/* Team has no page yet, so it's a non-navigating button. */}
       <button
         type="button"
-        class="rounded-xl bg-[#4f46e5] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:px-5"
+        class="w-full rounded-xl bg-[#4f46e5] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
       >
         Team
       </button>
 
       <a
         href="/faq"
-        class="rounded-xl bg-[#4f46e5] px-4 py-2 text-sm font-medium text-white no-underline transition-colors hover:bg-[#5b52ee] sm:px-5"
+        class="block w-full rounded-xl bg-[#4f46e5] px-4 py-2.5 text-center text-sm font-medium text-white no-underline transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
       >
         FAQ
       </a>
 
       {/* Select City dropdown: each option navigates to /{slug} */}
-      <div class="relative" data-city-dropdown>
+      <div class="relative w-full sm:w-auto" data-city-dropdown>
         <button
           type="button"
           data-city-toggle
           aria-expanded="false"
-          class="flex items-center gap-3 rounded-xl bg-[#4f46e5] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:px-5"
+          class="flex w-full items-center justify-center gap-3 rounded-xl bg-[#4f46e5] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
         >
-          <span class="whitespace-nowrap">
+          <span class="truncate whitespace-nowrap">
             {activeCity ? activeCity.name : "Select City"}
           </span>
           <svg
@@ -68,7 +89,7 @@ const activeCity = cityBySlug(slug) ?? null;
         <div
           data-city-panel
           hidden
-          class="absolute right-0 top-[calc(100%+0.4rem)] z-50 w-64 overflow-hidden rounded-xl bg-[#4f4fc8] py-1 shadow-2xl ring-1 ring-black/20"
+          class="absolute right-0 top-[calc(100%+0.4rem)] z-50 w-full min-w-64 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl bg-[#4f4fc8] py-1 shadow-2xl ring-1 ring-black/20 sm:w-64"
         >
           {
             CITIES.map((city) => (
@@ -94,6 +115,23 @@ const activeCity = cityBySlug(slug) ?? null;
 </header>
 
 <script>
+  const mobileMenuToggle = document.querySelector<HTMLButtonElement>(
+    "[data-mobile-menu-toggle]",
+  );
+  const mobileMenu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+
+  function setMobileMenuOpen(open: boolean) {
+    if (!mobileMenu || !mobileMenuToggle) return;
+    mobileMenu.classList.toggle("hidden", !open);
+    mobileMenu.classList.toggle("flex", open);
+    mobileMenuToggle.setAttribute("aria-expanded", String(open));
+  }
+
+  mobileMenuToggle?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    setMobileMenuOpen(mobileMenu?.classList.contains("hidden") ?? true);
+  });
+
   // Select City dropdown: toggle open/close on click, close on outside-click.
   const root = document.querySelector<HTMLElement>("[data-city-dropdown]");
   const toggle =
@@ -115,5 +153,13 @@ const activeCity = cityBySlug(slug) ?? null;
 
   document.addEventListener("mousedown", (e) => {
     if (root && !root.contains(e.target as Node)) setOpen(false);
+    if (
+      mobileMenu &&
+      mobileMenuToggle &&
+      !mobileMenu.contains(e.target as Node) &&
+      !mobileMenuToggle.contains(e.target as Node)
+    ) {
+      setMobileMenuOpen(false);
+    }
   });
 </script>

@@ -1,8 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import NovaLogo from "../components/NovaLogo.astro";
-import { SIGNUP_URL } from "../data/cities";
-
 type Faq = { q: string; a: string };
 
 const FAQ_ITEMS: Faq[] = [
@@ -64,13 +62,7 @@ const FAQ_ITEMS: Faq[] = [
       class="mt-8 flex flex-wrap items-center justify-center gap-6 sm:justify-start"
     >
       <div class="flex flex-col items-center">
-        <NovaLogo class="h-16 sm:h-24" />
-        <a
-          href="https://kiwihacks.org"
-          class="-mt-4 self-end text-sm text-white/90 no-underline transition-colors hover:text-white"
-        >
-          By KiwiHacks
-        </a>
+        <NovaLogo class="h-20 sm:h-28" />
       </div>
       <h1 class="text-5xl font-semibold text-white sm:text-7xl">FAQ</h1>
     </div>
@@ -85,19 +77,6 @@ const FAQ_ITEMS: Faq[] = [
           </div>
         ))
       }
-    </div>
-
-    {/* Bottom CTA */}
-    <div class="mt-20 flex flex-col items-center">
-      <h2 class="text-center text-2xl font-semibold text-white sm:text-3xl">
-        Ready for the experience of a lifetime?
-      </h2>
-      <a
-        href={SIGNUP_URL}
-        class="mt-6 inline-block rounded-2xl bg-[#4f46e5] px-10 py-3.5 text-base font-semibold text-white no-underline shadow-lg transition-colors hover:bg-[#5b52ee]"
-      >
-        Sign up for Nova!
-      </a>
     </div>
   </div>
 </Layout>
