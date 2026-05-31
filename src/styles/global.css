@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/* Geist + Geist Mono via fontsource (replaces next/font). */
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+:root {
+  /* Nova brand palette, sampled from the design mockups. */
+  --nova-bg: #0a0d28; /* near-black indigo page background */
+  --nova-bg-bottom: #05071a; /* darker bottom for the subtle gradient */
+  --nova-foreground: #ffffff;
+
+  /* Font variables, matching the old next/font setup. */
+  --font-geist-sans: "Geist Variable", Arial, Helvetica, sans-serif;
+  --font-geist-mono: "Geist Mono Variable", ui-monospace, monospace;
+}
+
+@theme inline {
+  --color-background: var(--nova-bg);
+  --color-foreground: var(--nova-foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  background: var(--nova-bg);
+}
+
+body {
+  /* Subtle vertical gradient to darker at the bottom. */
+  background: linear-gradient(
+    180deg,
+    var(--nova-bg) 0%,
+    var(--nova-bg) 55%,
+    var(--nova-bg-bottom) 100%
+  );
+  background-attachment: fixed;
+  color: var(--nova-foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/*
+ * PLACEHOLDER Nova wordmark styling: layered blue/purple/pink 3D look.
+ * Approximates the Figma logo. Swap with the real export when available.
+ */
+.nova-wordmark {
+  font-family:
+    var(--font-geist-sans), "Arial Rounded MT Bold", Arial, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.nova-letter {
+  background: linear-gradient(
+    180deg,
+    #6f7bff 0%,
+    #5a5fe0 42%,
+    #2a2f7a 60%,
+    #e36fae 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* layered drop shadow to fake the 3D/outline depth from the mock */
+  -webkit-text-stroke: 2px #11143a;
+  paint-order: stroke fill;
+  filter: drop-shadow(2px 3px 0 rgba(17, 20, 58, 0.9));
+}

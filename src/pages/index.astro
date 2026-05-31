@@ -1,11 +1,11 @@
 ---
-import Nav from "../components/Nav.astro";
 import Layout from "../layouts/Layout.astro";
+import CityHome from "../components/CityHome.astro";
+import { DEFAULT_CITY } from "../data/cities";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Root "/" defaults to Auckland. Other cities live at "/wellington", "/christchurch", "/auckland".
 ---
 
 <Layout>
-  <Nav />
+  <CityHome city={DEFAULT_CITY} />
 </Layout>
