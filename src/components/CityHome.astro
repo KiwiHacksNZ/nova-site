@@ -1,0 +1,96 @@
+---
+import NovaLogo from "./NovaLogo.astro";
+import { SIGNUP_URL, type City } from "../data/cities";
+
+// Home page content, driven by the city in the URL ("/" defaults to Auckland).
+interface Props {
+  city: City;
+}
+
+const { city } = Astro.props;
+---
+
+<div class="mx-auto flex max-w-5xl flex-col items-center px-5 pt-16 pb-24 text-center sm:pt-24">
+  {/* 1. Big centered Nova logo + By KiwiHacks (links to kiwihacks.org) */}
+  <div class="flex flex-col items-center">
+    <NovaLogo class="h-28 sm:h-40" />
+    <a
+      href="https://kiwihacks.org"
+      class="-mt-6 self-end text-xl text-white/90 no-underline transition-colors hover:text-white sm:-mt-9 sm:mr-4"
+    >
+      By KiwiHacks
+    </a>
+  </div>
+
+  {/* 2. City subtitle */}
+  <p class="mt-8 max-w-2xl text-xl text-white sm:text-2xl">
+    {city.name}&apos;s free 24 hour hackathon for high school students
+  </p>
+
+  {/* 3. Pink banner: city + date (Location/People still TBC) */}
+  <div class="mt-7 w-full rounded-[2rem] bg-[#cf6da0] px-6 py-7 text-center shadow-lg">
+    <p class="text-lg font-semibold uppercase tracking-wide text-white sm:text-2xl">
+      {city.name}
+      {"  ·  "}
+      {city.date}
+      {"  ·  "}Location TBC
+    </p>
+  </div>
+
+  {/* 4. Sign up button */}
+  <div class="mt-9">
+    <a
+      href={SIGNUP_URL}
+      class="inline-block rounded-2xl bg-[#4f46e5] px-12 py-4 text-lg font-semibold text-white no-underline shadow-lg transition-colors hover:bg-[#5b52ee]"
+    >
+      Sign up for Nova!
+    </a>
+  </div>
+
+  {/* 5. About Nova */}
+  <section class="mt-24 w-full">
+    <h2 class="text-center text-4xl font-semibold text-white sm:text-5xl">
+      About Nova
+    </h2>
+
+    <div class="mx-auto mt-8 max-w-3xl space-y-5 text-left text-lg leading-relaxed text-white/85 sm:text-xl">
+      <p>
+        KiwiHacks Nova is our first national tour. Three cities, three weekends,
+        three free 24-hour hackathons for high schoolers. A nova is a star that
+        suddenly bursts bright, and that is the idea: light up Wellington,
+        Christchurch, and Auckland with students building real things.
+      </p>
+      <p>
+        It is a chance to meet new people, learn new skills, and build something
+        you are actually proud of, whether that is an app, a game, a website, a
+        hardware project, or something nobody has seen before. You team up, you get
+        24 hours, and you ship. Mentors are around the whole time, and
+        beginner-friendly workshops mean you do not need any experience to start.
+        Food, drinks, and swag are all included, and it is completely free.
+      </p>
+      <p>
+        We are KiwiHacks, New Zealand&apos;s first high school hackathon club, built
+        and run entirely by teenagers. At KiwiHacks &rsquo;26 earlier this year, over
+        100 high schoolers turned up and every single team left with a finished
+        project. 86% of them made a new friend. Nova takes that across the country.
+        Whatever your skill level, you are welcome. Just sign up, show up, and give
+        it a go.
+      </p>
+    </div>
+
+    {/* Photo gallery placeholders, swap for real event photos later. */}
+    <div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3">
+      {
+        Array.from({ length: 6 }).map(() => (
+          <div
+            class="flex aspect-[4/3] items-center justify-center rounded-2xl border-2 border-dashed border-white/15 bg-white/[0.02]"
+          >
+            <span class="text-sm text-white/35">Photo</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* Partners section hidden for now. Re-enable once we have partners to show. */}
+</div>

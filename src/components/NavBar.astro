@@ -1,0 +1,113 @@
+---
+import NovaLogo from "./NovaLogo.astro";
+import { CITIES, DEFAULT_CITY_SLUG, cityBySlug } from "../data/cities";
+
+// Current city is derived from the URL. "/" defaults to Auckland.
+// On non-city routes (e.g. /faq) there is no active city, so the button reads "Select City".
+const pathname = Astro.url.pathname;
+const normalized = pathname.replace(/\/$/, "") || "/";
+const slug = normalized === "/" ? DEFAULT_CITY_SLUG : normalized.replace(/^\//, "");
+const activeCity = cityBySlug(slug) ?? null;
+---
+
+<!-- The bar plus its bright pink gradient underline strip. -->
+<header class="sticky top-0 z-50 w-full">
+  <nav class="flex w-full flex-wrap items-center justify-between gap-3 bg-[#161a3d] px-5 py-2.5 sm:px-8">
+    {/* Left: Nova wordmark, links home */}
+    <a href="/" class="flex items-center gap-2 no-underline">
+      <NovaLogo class="h-8 sm:h-9" />
+    </a>
+
+    {/* Right: Team, FAQ, Select City */}
+    <div class="flex items-center gap-2 sm:gap-3">
+      {/* Team has no page yet, so it's a non-navigating button. */}
+      <button
+        type="button"
+        class="rounded-xl bg-[#4f46e5] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:px-5"
+      >
+        Team
+      </button>
+
+      <a
+        href="/faq"
+        class="rounded-xl bg-[#4f46e5] px-4 py-2 text-sm font-medium text-white no-underline transition-colors hover:bg-[#5b52ee] sm:px-5"
+      >
+        FAQ
+      </a>
+
+      {/* Select City dropdown: each option navigates to /{slug} */}
+      <div class="relative" data-city-dropdown>
+        <button
+          type="button"
+          data-city-toggle
+          aria-expanded="false"
+          class="flex items-center gap-3 rounded-xl bg-[#4f46e5] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:px-5"
+        >
+          <span class="whitespace-nowrap">
+            {activeCity ? activeCity.name : "Select City"}
+          </span>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            class="h-6 w-6 shrink-0 transition-transform"
+            data-city-chevron
+            aria-hidden="true"
+          >
+            <path
+              d="M5 9l7 7 7-7"
+              stroke="white"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </button>
+
+        <div
+          data-city-panel
+          hidden
+          class="absolute right-0 top-[calc(100%+0.4rem)] z-50 w-64 overflow-hidden rounded-xl bg-[#4f4fc8] py-1 shadow-2xl ring-1 ring-black/20"
+        >
+          {
+            CITIES.map((city) => (
+              <a
+                href={`/${city.slug}`}
+                class="flex w-full items-baseline justify-between gap-4 px-4 py-1.5 text-left no-underline transition-colors hover:bg-white/10"
+              >
+                <span class="text-lg text-white">{city.name}</span>
+                <span class="text-xs text-white/70">{city.date}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  {/* Bright pink gradient underline strip beneath the bar. */}
+  <div class="h-[3px] w-full bg-gradient-to-r from-[#ff5ea0] via-[#ff7ab3] to-[#ff5ea0]"></div>
+</header>
+
+<script>
+  // Select City dropdown: toggle open/close on click, close on outside-click.
+  const root = document.querySelector<HTMLElement>("[data-city-dropdown]");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-city-toggle]");
+  const panel = document.querySelector<HTMLElement>("[data-city-panel]");
+  const chevron = document.querySelector<SVGElement>("[data-city-chevron]");
+
+  function setOpen(open: boolean) {
+    if (!panel || !toggle) return;
+    panel.hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+    if (chevron) chevron.classList.toggle("rotate-180", open);
+  }
+
+  toggle?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    setOpen(panel?.hidden ?? false);
+  });
+
+  document.addEventListener("mousedown", (e) => {
+    if (root && !root.contains(e.target as Node)) setOpen(false);
+  });
+</script>

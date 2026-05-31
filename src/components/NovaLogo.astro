@@ -1,0 +1,19 @@
+---
+/*
+ * Nova wordmark. Renders the real logo export at public/nova-logo.png
+ * (blue/purple/pink layered lettering with a yellow star for the "o").
+ * Scale via the `class` height utility, e.g. "h-28 sm:h-40".
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className = "h-24" } = Astro.props;
+---
+
+<!-- Static brand asset; plain img is fine. -->
+<img
+  src="/nova-logo.png"
+  alt="Nova by KiwiHacks"
+  class={`${className} w-auto select-none`}
+/>
