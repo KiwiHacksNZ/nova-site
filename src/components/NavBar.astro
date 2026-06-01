@@ -2,8 +2,8 @@
 import NovaLogo from "./NovaLogo.astro";
 import { CITIES, DEFAULT_CITY_SLUG, cityBySlug } from "../data/cities";
 
-// Current city is derived from the URL. "/" defaults to Auckland.
-// On non-city routes (e.g. /faq) there is no active city, so the button reads "Select City".
+// Current deployment region is derived from the URL. "/" defaults to Auckland.
+// On non-city routes (e.g. /faq) there is no active city, so the button reads "Select Region".
 const pathname = Astro.url.pathname;
 const normalized = pathname.replace(/\/$/, "") || "/";
 const slug =
@@ -38,28 +38,28 @@ const activeCity = cityBySlug(slug) ?? null;
       </svg>
     </button>
 
-    {/* Right: Team, FAQ, Select City */}
+    {/* Right: Solutions, FAQ, Select Region */}
     <div
       id="mobile-menu"
       data-mobile-menu
       class="hidden w-full flex-col gap-2 rounded-2xl bg-white/5 p-2 ring-1 ring-white/10 sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-3 sm:bg-transparent sm:p-0 sm:ring-0"
     >
-      {/* Team has no page yet, so it's a non-navigating button. */}
+      {/* Solutions has no page yet, so it's a non-navigating button. */}
       <button
         type="button"
         class="w-full rounded-xl bg-[#4f46e5] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
       >
-        Team
+        Solutions
       </button>
 
       <a
         href="/faq"
         class="block w-full rounded-xl bg-[#4f46e5] px-4 py-2.5 text-center text-sm font-medium text-white no-underline transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
       >
-        FAQ
+        Due Diligence
       </a>
 
-      {/* Select City dropdown: each option navigates to /{slug} */}
+      {/* Select Region dropdown: each option navigates to /{slug} */}
       <div class="relative w-full sm:w-auto" data-city-dropdown>
         <button
           type="button"
@@ -68,7 +68,7 @@ const activeCity = cityBySlug(slug) ?? null;
           class="flex w-full items-center justify-center gap-3 rounded-xl bg-[#4f46e5] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
         >
           <span class="truncate whitespace-nowrap">
-            {activeCity ? activeCity.name : "Select City"}
+            {activeCity ? activeCity.name : "Select Region"}
           </span>
           <svg
             viewBox="0 0 24 24"
@@ -132,7 +132,7 @@ const activeCity = cityBySlug(slug) ?? null;
     setMobileMenuOpen(mobileMenu?.classList.contains("hidden") ?? true);
   });
 
-  // Select City dropdown: toggle open/close on click, close on outside-click.
+  // Select Region dropdown: toggle open/close on click, close on outside-click.
   const root = document.querySelector<HTMLElement>("[data-city-dropdown]");
   const toggle =
     document.querySelector<HTMLButtonElement>("[data-city-toggle]");

@@ -1,4 +1,4 @@
 import { atom } from "nanostores";
 
-export type City = "Select City" | "Auckland" | "Welington" | "Christchurch";
-export const city = atom<City>("Select City");
+export type City = "Select Region" | "Auckland" | "Wellington" | "Christchurch";
+export const city = atom<City>("Select Region");

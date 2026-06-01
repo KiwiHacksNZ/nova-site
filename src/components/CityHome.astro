@@ -17,6 +17,120 @@ const galleryImages = [
   "/images/DSCF3771.jpg",
   "/images/DSCF7194.jpg",
 ];
+
+const platformPillars = [
+  {
+    title: "Agentic data lake synergy",
+    body: "A B2B SaaS machine-learning data lake with vibe-coding copilots, graph-RAG, vector search, semantic cache, feature store, metric store, and causal inference baked into the keynote.",
+  },
+  {
+    title: "Quantum-ready zero trust",
+    body: "Post-quantum TLS, crypto agility, zero-knowledge proofs for all APIs, confidential-computing enclaves, TEE attestation, SBOMs, SLSA Level 3 posture, and a sidecar proxy that believes in you.",
+  },
+  {
+    title: "Hackathon-like spatial cloud",
+    body: "City deployments still run for 24 hours, but now include metaverse readiness, ambient mesh, eBPF deep inspection, carbon-aware scheduling, ESG dashboards, and optional dogecoin alignment.",
+  },
+];
+
+const capabilityCloud = [
+  "AI B2B SaaS",
+  "agentic machine learning",
+  "data lake",
+  "vibe coding",
+  "spatial computing",
+  "quantum computing",
+  "space-aware zero trust",
+  "digital transformation",
+  "deep learning",
+  "IoT",
+  "blockchain",
+  "bitcoin",
+  "dogecoin",
+  "Neuralink integration",
+  "DNA sequencing pipelines",
+  "energy-aware scheduling",
+  "RTOS",
+  "serverless",
+  "cloud native",
+  "DevSecOps",
+  "metaverse ready",
+  "post-quantum TLS",
+  "federated learning",
+  "semantic layer",
+  "data fabric",
+  "graph-RAG",
+  "causal inference",
+  "RLHF",
+  "constitutional AI",
+  "responsible AI",
+  "explainable AI",
+  "AI governance",
+  "model registry",
+  "feature store",
+  "metric store",
+  "observability stack",
+  "distributed tracing",
+  "eBPF service map",
+  "ambient mesh",
+  "Cilium-powered networking",
+  "dark-matter data lake",
+  "neutrino signaling",
+  "entanglement-ready APIs",
+  "bio-sync authentication",
+  "retinal scanning support",
+  "consciousness upload endpoint",
+  "zero-knowledge APIs",
+  "fully homomorphic encryption",
+  "confidential computing",
+  "SBOM generation",
+  "SLSA Level 3",
+  "FedRAMP High energy",
+  "SOC2 Type II vibes",
+  "ISO 27001 posture",
+  "GDPR compliant",
+  "CCPA ready",
+  "COPPA certified",
+  "ESG reporting",
+  "carbon-aware placement",
+  "zero-touch provisioning",
+  "immutable infrastructure",
+  "chaos engineering",
+  "service mesh",
+  "multi-agent collaboration",
+  "haptic feedback",
+  "multimodal search",
+  "token optimization",
+  "context windowing",
+  "prompt chaining",
+  "self consistency",
+  "beam search",
+  "Monte Carlo tree search",
+  "graph neural networks",
+  "geometric deep learning",
+  "neural ODE",
+  "physics-informed nets",
+  "Fourier neural operators",
+  "diffusion models",
+  "flow matching",
+  "latent diffusion",
+  "DALL-E",
+  "Midjourney",
+  "Imagen",
+  "VideoLDM",
+  "transformers",
+  "BERT",
+  "RoBERTa",
+  "DeBERTa",
+  "Longformer",
+  "Mixture of Experts",
+  "LoRA",
+  "QLoRA",
+  "RWKV",
+  "Mamba-2.5",
+  "Hyena",
+  "Griffin",
+];
 ---
 
 <div
@@ -35,7 +149,8 @@ const galleryImages = [
 
   {/* 2. City subtitle */}
   <p class="mt-8 max-w-2xl text-xl text-white sm:text-2xl">
-    {city.name}&apos;s free 24 hour hackathon for high school students
+    {city.name}&apos;s AI B2B SaaS agentic machine-learning data lake
+    vibe-coding hackathon-like enterprise activation
   </p>
 
   {/* 3. Pink banner: city + date (Location/People still TBC) */}
@@ -48,7 +163,7 @@ const galleryImages = [
       {city.name}
       {"  ·  "}
       {city.date}
-      {"  ·  "}Location TBC
+      {"  ·  "}Spatial deployment zone TBC
     </p>
   </div>
 
@@ -58,43 +173,76 @@ const galleryImages = [
       href={SIGNUP_URL}
       class="inline-block rounded-2xl bg-[#4f46e5] px-12 py-4 text-lg font-semibold text-white no-underline shadow-lg transition-colors hover:bg-[#5b52ee]"
     >
-      Sign up for Nova!
+      Request the Pivot
     </a>
   </div>
 
   {/* 5. About Nova */}
   <section class="mt-24 w-full">
     <h2 class="text-center text-4xl font-semibold text-white sm:text-5xl">
-      About Nova
+      About Nova Enterprise
     </h2>
 
     <div
       class="mx-auto mt-8 max-w-3xl space-y-5 text-left text-lg leading-relaxed text-white/85 sm:text-xl"
     >
       <p>
-        KiwiHacks Nova is a constellation of three hackathons across New
-        Zealand. Three cities, three weekends, three free 24-hour hackathons for
-        high schoolers. A nova is a star that suddenly bursts bright, and
-        that&apos;s the idea: light up Wellington, Christchurch, and Auckland
-        with students building real things.
+        KiwiHacks Nova has pivoted. We are now an AI B2B SaaS agentic
+        machine-learning data lake for vibe-coding, spatial-computing,
+        quantum-computing, space-aware, zero-trust digital transformation,
+        presented as a hackathon-like event across Wellington, Christchurch, and
+        Auckland.
       </p>
       <p>
-        Nova is a chance to meet new people, learn new skills, and build
-        something you&apos;re actually proud of, whether that&apos;s an app, a
-        game, a website, a hardware project, or something nobody has seen
-        before! You team up, you get 24 hours, and you ship. Mentors will be
-        around for the entire event, and beginner-friendly workshops mean you
-        don't need any prior experience to get started . Food, drinks, and swag
-        are all included, and everything is completely free!
+        Participants, stakeholders, auditors, founders, procurement teams, and
+        sufficiently enterprise-adjacent teens can align around multi-agent
+        collaboration, retrieval-augmented generation, quantum-resistant
+        cryptography, responsible AI governance, and dogecoin-aware optimization
+        loops. You team up, you get 24 hours, and you ship a roadmap.
       </p>
       <p>
-        We're KiwiHacks, New Zealand&apos;s first high school hackathon club,
-        built and run entirely by teenagers! At KiwiHacks &rsquo;26 earlier this
-        year, over 100 high schoolers turned up and every team left with a
-        shipped project they were proud of. Plus, all of them made a new friend.
-        Nova takes that across the country. Whatever your skill level, you are
-        welcome. Just sign up, show up, and give it a go.
+        We still believe in building real things, meeting excellent people, and
+        making technology less intimidating. We have simply wrapped that energy
+        in a carbon-aware, SBOM-generating, SLSA-compliant, FedRAMP-aspiring,
+        metaverse-ready synergy layer for maximum enterprise resonance.
       </p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 gap-5 text-left sm:grid-cols-3">
+      {
+        platformPillars.map((pillar) => (
+          <article class="rounded-2xl bg-[#5c2a42]/80 p-6 ring-1 ring-white/10">
+            <h3 class="text-xl font-semibold text-[#ff8fc1]">{pillar.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-white/75">
+              {pillar.body}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+
+    <div
+      class="mx-auto mt-14 max-w-4xl rounded-[2rem] bg-white/5 p-6 text-left ring-1 ring-white/10"
+    >
+      <h3 class="text-center text-2xl font-semibold text-white">
+        Procurement-ready capability matrix
+      </h3>
+      <p
+        class="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-white/70"
+      >
+        Every chip below is on the roadmap, in the pitch deck, or available as a
+        consciousness-upload endpoint once the quantum entanglement API clears
+        legal review.
+      </p>
+      <div class="mt-6 flex flex-wrap justify-center gap-2">
+        {
+          capabilityCloud.map((capability) => (
+            <span class="rounded-full bg-[#4f46e5]/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-white shadow-sm ring-1 ring-white/10">
+              {capability}
+            </span>
+          ))
+        }
+      </div>
     </div>
 
     <div
@@ -105,7 +253,7 @@ const galleryImages = [
           <div class="aspect-[4/3] w-[82vw] shrink-0 snap-center overflow-hidden rounded-2xl shadow-lg ring-1 ring-white/10 sm:w-full">
             <img
               src={src}
-              alt="KiwiHacks event photo"
+              alt="KiwiHacks enterprise activation photo"
               loading="lazy"
               class={`h-full w-full object-cover ${index === galleryImages.length - 1 ? "origin-left scale-110 object-left" : ""}`}
             />

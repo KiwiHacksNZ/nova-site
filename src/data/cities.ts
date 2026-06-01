@@ -1,6 +1,6 @@
 // Shared constants for the Nova site.
 
-// Single source of truth for the sign-up link. Used by every "Sign up for Nova!" button.
+// Single source of truth for the sign-up link. Used by every pivot CTA.
 export const SIGNUP_URL = "https://kiwihacks.fillout.com/nova";
 
 export type City = {
