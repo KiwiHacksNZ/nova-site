@@ -17,6 +17,12 @@ const galleryImages = [
   "/images/DSCF3771.jpg",
   "/images/DSCF7194.jpg",
 ];
+
+const carouselImages = [
+  galleryImages[galleryImages.length - 1],
+  ...galleryImages,
+  galleryImages[0],
+];
 ---
 
 <div
@@ -97,21 +103,59 @@ const galleryImages = [
       </p>
     </div>
 
-    <div
-      class="-mx-5 mt-12 flex snap-x gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 sm:pb-0"
-    >
-      {
-        galleryImages.map((src, index) => (
-          <div class="aspect-[4/3] w-[82vw] shrink-0 snap-center overflow-hidden rounded-2xl shadow-lg ring-1 ring-white/10 sm:w-full">
-            <img
-              src={src}
-              alt="KiwiHacks event photo"
-              loading="lazy"
-              class={`h-full w-full object-cover ${index === galleryImages.length - 1 ? "origin-left scale-110 object-left" : ""}`}
-            />
-          </div>
-        ))
-      }
+    <div class="relative mt-12">
+      <button
+        type="button"
+        data-gallery-prev
+        class="absolute left-3 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl bg-[#4f46e5]/90 text-white shadow-lg ring-1 ring-white/15 transition-colors hover:bg-[#5b52ee] sm:inline-flex"
+        aria-label="Previous photo"
+      >
+        <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true">
+          <path
+            d="M15 19l-7-7 7-7"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </button>
+
+      <div
+        data-gallery-carousel
+        class="-mx-5 flex snap-x gap-4 overflow-x-auto scroll-smooth px-5 pb-4 sm:mx-0 sm:px-0 sm:pb-0"
+      >
+        {
+          carouselImages.map((src) => (
+            <div
+              data-gallery-slide
+              class="aspect-[4/3] w-[82vw] shrink-0 snap-center overflow-hidden rounded-2xl shadow-lg ring-1 ring-white/10 sm:w-[72%] lg:w-[64%]"
+            >
+              <img
+                src={src}
+                alt="KiwiHacks event photo"
+                loading="lazy"
+                class={`h-full w-full object-cover ${src === galleryImages[galleryImages.length - 1] ? "origin-left scale-110 object-left" : ""}`}
+              />
+            </div>
+          ))
+        }
+      </div>
+
+      <button
+        type="button"
+        data-gallery-next
+        class="absolute right-3 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl bg-[#4f46e5]/90 text-white shadow-lg ring-1 ring-white/15 transition-colors hover:bg-[#5b52ee] sm:inline-flex"
+        aria-label="Next photo"
+      >
+        <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true">
+          <path
+            d="M9 5l7 7-7 7"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </button>
     </div>
   </section>
 
@@ -119,3 +163,104 @@ const galleryImages = [
     /* Partners section hidden for now. Re-enable once we have partners to show. */
   }
 </div>
+
+<script>
+  const galleryCarousel = document.querySelector<HTMLElement>(
+    "[data-gallery-carousel]",
+  );
+  const galleryPrev = document.querySelector<HTMLButtonElement>(
+    "[data-gallery-prev]",
+  );
+  const galleryNext = document.querySelector<HTMLButtonElement>(
+    "[data-gallery-next]",
+  );
+  let galleryIndex = 1;
+  let resetTimer: number | undefined;
+
+  function gallerySlides() {
+    return Array.from(
+      galleryCarousel?.querySelectorAll<HTMLElement>("[data-gallery-slide]") ??
+        [],
+    );
+  }
+
+  function syncGalleryIndex() {
+    if (!galleryCarousel) return;
+
+    const slides = gallerySlides();
+    const closest = slides.reduce(
+      (best, slide, index) => {
+        const distance = Math.abs(
+          slide.offsetLeft - galleryCarousel.scrollLeft,
+        );
+        return distance < best.distance ? { index, distance } : best;
+      },
+      { index: galleryIndex, distance: Number.POSITIVE_INFINITY },
+    );
+
+    galleryIndex = closest.index;
+  }
+
+  function scrollToGalleryIndex(index: number, behavior: ScrollBehavior) {
+    if (!galleryCarousel) return;
+
+    const slides = gallerySlides();
+    const slide = slides[index];
+    if (!slide) return;
+
+    galleryIndex = index;
+    galleryCarousel.scrollTo({ left: slide.offsetLeft, behavior });
+  }
+
+  function resetInfiniteEdge() {
+    const slides = gallerySlides();
+    if (galleryIndex === 0) {
+      scrollToGalleryIndex(slides.length - 2, "auto");
+      return;
+    }
+
+    if (galleryIndex === slides.length - 1) {
+      scrollToGalleryIndex(1, "auto");
+    }
+  }
+
+  function scheduleInfiniteReset() {
+    if (!galleryCarousel) return;
+
+    window.clearTimeout(resetTimer);
+
+    let resetComplete = false;
+    const reset = () => {
+      if (resetComplete) return;
+      resetComplete = true;
+      resetInfiniteEdge();
+      galleryCarousel.removeEventListener("scrollend", reset);
+    };
+
+    galleryCarousel.addEventListener("scrollend", reset, { once: true });
+    resetTimer = window.setTimeout(reset, 450);
+  }
+
+  function scrollGallery(direction: -1 | 1) {
+    const slides = gallerySlides();
+    if (!galleryCarousel || slides.length === 0) return;
+
+    syncGalleryIndex();
+
+    const nextIndex = Math.max(
+      0,
+      Math.min(slides.length - 1, galleryIndex + direction),
+    );
+
+    scrollToGalleryIndex(nextIndex, "smooth");
+
+    if (nextIndex === 0 || nextIndex === slides.length - 1) {
+      scheduleInfiniteReset();
+    }
+  }
+
+  requestAnimationFrame(() => scrollToGalleryIndex(1, "auto"));
+
+  galleryPrev?.addEventListener("click", () => scrollGallery(-1));
+  galleryNext?.addEventListener("click", () => scrollGallery(1));
+</script>
