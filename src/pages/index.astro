@@ -9,3 +9,11 @@ import { DEFAULT_CITY } from "../data/cities";
 <Layout>
   <CityHome city={DEFAULT_CITY} />
 </Layout>
+
+<script>
+  // If a city is saved in localStorage, redirect to that city's page
+  const savedCity = localStorage.getItem("selectedCity");
+  if (savedCity) {
+    window.location.href = `/${savedCity}`;
+  }
+</script>

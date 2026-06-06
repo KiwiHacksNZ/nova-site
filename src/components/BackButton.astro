@@ -1,0 +1,30 @@
+---
+// Smart back button that goes to the selected city or defaults to root
+---
+
+<a
+  href="/"
+  data-back-button
+  class="inline-flex items-center gap-2 rounded-xl bg-[#4f46e5] px-4 py-2 text-sm font-medium text-white no-underline transition-colors hover:bg-[#5b52ee]"
+>
+  <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
+    <path
+      d="M15 19l-7-7 7-7"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg>
+  Back
+</a>
+
+<script>
+  const backButton =
+    document.querySelector<HTMLAnchorElement>("[data-back-button]");
+  if (backButton) {
+    const savedCity = localStorage.getItem("selectedCity");
+    if (savedCity) {
+      backButton.href = `/${savedCity}`;
+    }
+  }
+</script>
