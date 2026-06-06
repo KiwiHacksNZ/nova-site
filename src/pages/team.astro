@@ -1,0 +1,206 @@
+---
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+import NovaLogo from "../components/NovaLogo.astro";
+
+type TeamLink = {
+  label: string;
+  href: string;
+};
+
+type TeamMember = {
+  name: string;
+  image: string;
+  bio: string;
+  links: TeamLink[];
+};
+
+const socialIcons: Record<string, string> = {
+  Email:
+    "M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z",
+  Phone:
+    "M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.61 21 3 13.39 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z",
+  Instagram:
+    "M7.8 2h8.4A5.8 5.8 0 0122 7.8v8.4a5.8 5.8 0 01-5.8 5.8H7.8A5.8 5.8 0 012 16.2V7.8A5.8 5.8 0 017.8 2zm-.2 2A3.6 3.6 0 004 7.6v8.8A3.6 3.6 0 007.6 20h8.8a3.6 3.6 0 003.6-3.6V7.6A3.6 3.6 0 0016.4 4H7.6zm9.65 1.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5zM12 7a5 5 0 110 10 5 5 0 010-10zm0 2a3 3 0 100 6 3 3 0 000-6z",
+  LinkedIn:
+    "M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.23 0z",
+  GitHub:
+    "M12 .3C5.37.3 0 5.67 0 12.3c0 5.3 3.44 9.8 8.2 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.04-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23A11.47 11.47 0 0112 5.6c1.02.01 2.04.14 3 .41 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.82 1.1.82 2.22 0 1.6-.02 2.89-.02 3.29 0 .32.22.69.83.57A12 12 0 0012 .3z",
+  GitLab:
+    "M23.96 13.59l-1.34-4.13L19.96 1.3a.46.46 0 00-.87 0l-2.66 8.16H7.57L4.91 1.3a.46.46 0 00-.87 0L1.38 9.46.04 13.59a.92.92 0 00.33 1.02L12 23.05l11.62-8.44a.92.92 0 00.34-1.02zM12 23.05l4.43-13.59H7.57L12 23.05z",
+};
+
+const members: TeamMember[] = [
+  {
+    name: "Niko Purdie",
+    image: "https://www.kiwihacks.org/assets/niko-BSB4MRDU.jpg",
+    bio: "I’m a 17 year old coder from Sacred Heart College and the lead organiser of KiwiHacks. This is the fourth hackathon I’ve organized for students in Auckland! I’m passionate about both sailing and coding, and I’m super excited to help create an awesome experience for everyone who attends!!",
+    links: [
+      { label: "Email", href: "mailto:niko@kiwihacks.org" },
+      { label: "Phone", href: "tel:0221350419" },
+      {
+        label: "Instagram",
+        href: "https://www.instagram.com/niko_p101/?hl=en",
+      },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/nikopurdie?originalSubdomain=nz",
+      },
+      { label: "GitHub", href: "https://github.com/N1k0s1" },
+    ],
+  },
+  {
+    name: "Sebastian Johnson",
+    image: "https://www.kiwihacks.org/assets/sebastian-Dci24rUi.jpg",
+    bio: "I’m a 15 year old student from Pakuranga College helping out with the website and technical infrastructure for KiwiHacks. I’m passionate about technology, AV, and building cool systems that make events run smoothly. I’m excited to help bring KiwiHacks to life and see the amazing projects people create during the hackathon!",
+    links: [
+      { label: "Email", href: "mailto:pakkid@stuffandthings.cc" },
+      { label: "Instagram", href: "https://www.instagram.com/le_snakey" },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/sebastian-johnson-61389138b",
+      },
+      { label: "GitHub", href: "https://github.com/pakkid" },
+    ],
+  },
+  {
+    name: "Josh Palmer",
+    image: "https://www.kiwihacks.org/assets/josh-HAfF2EQi.jpg",
+    bio: "I’m a 14 year old scout from Selwyn College leading outreach + helping out the website. I’m passionate about coding & learning. I love the thrill of getting a project finally working & I’m super excited to see what people create at KiwiHacks!",
+    links: [
+      { label: "Email", href: "mailto:josh@kiwihacks.org" },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/josh-palmer-b9942237b/",
+      },
+      { label: "GitHub", href: "https://github.com/heycastawhat" },
+      { label: "GitLab", href: "https://gitlab.com/castawhat" },
+    ],
+  },
+  {
+    name: "Audrey Shi",
+    image: "https://www.kiwihacks.org/assets/audrey-5AENO453.jpg",
+    bio: "Hey there! I’m a 15 year old coder from Glendowie College, and the Art & Branding lead at KiwiHacks. I have a passion for all sorts of things, including coding, art, and learning. I’m extremely grateful to be a part of the team, and I’m excited to make KiwiHacks an amazing event for all our attendees!",
+    links: [
+      { label: "Email", href: "mailto:audrey@kiwihacks.org" },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/audrey-shi-0657213b4/",
+      },
+    ],
+  },
+  {
+    name: "Kyle Bendall",
+    image: "https://www.kiwihacks.org/assets/kyle-DkGiKs1o.jpg",
+    bio: "I’m a 16 year old coder from Marcellin College leading website building and helping with outreach. I’m passionate about coding and learning (and playing video games). I’m excited to help people create something cool at KiwiHacks!",
+    links: [
+      { label: "Email", href: "mailto:kyle@kiwihacks.org" },
+      { label: "LinkedIn", href: "https://linkedin.com/in/kyle-b-134a48390" },
+      { label: "GitHub", href: "https://github.com/Dekoder-py" },
+      { label: "GitLab", href: "https://gitlab.com/dekoder-py" },
+    ],
+  },
+  {
+    name: "Christie Berenshteyn",
+    image: "https://www.kiwihacks.org/assets/christie-BhcpgFV-.jpg",
+    bio: "I’m a Year 11 Glendowie College student helping with outreach and marketing, among other things. Outside of coding, I enjoy playing the piano, baking, learning new things, and leading several school clubs. I’m really excited to make KiwiHacks New Zealand’s BEST hackathon!",
+    links: [
+      { label: "Email", href: "mailto:christie@kiwihacks.org" },
+      { label: "GitHub", href: "https://github.com/Christie125" },
+    ],
+  },
+  {
+    name: "Maggie Berenshteyn",
+    image: "https://www.kiwihacks.org/assets/maggie-CK6Xw0FP.jpg",
+    bio: "I’m a 15 year old student from Glendowie College who organises the social media and advertising for KiwiHacks. I’m excited to help spread the word about KiwiHacks to make it a super fun event for everyone!",
+    links: [{ label: "Email", href: "mailto:maggie.berenshteyn@gmail.com" }],
+  },
+  {
+    name: "Kiera Langridge",
+    image: "https://www.kiwihacks.org/assets/kiera-PCkvP3kV.jpg",
+    bio: "I’m a 16 year old student from Baradene College helping out with outreach and branding. I’m passionate about learning, writing, and coding awesome projects. I can’t wait to see what people create at KiwiHacks, and I’m so excited to help bring the event to life!",
+    links: [
+      { label: "Email", href: "mailto:kiera.langridge@gmail.com" },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/kiera-langridge-459098322/",
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  title="KiwiHacks Nova | Team"
+  description="Meet the KiwiHacks Nova team."
+>
+  <div class="mx-auto max-w-5xl px-5 pt-6 pb-24">
+    <a
+      href="/"
+      class="inline-flex items-center gap-2 rounded-xl bg-[#4f46e5] px-4 py-2 text-sm font-medium text-white no-underline transition-colors hover:bg-[#5b52ee]"
+    >
+      <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
+        <path
+          d="M15 19l-7-7 7-7"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+      Back
+    </a>
+
+    <div
+      class="mt-8 flex flex-wrap items-center justify-center gap-4 sm:justify-start"
+    >
+      <NovaLogo class="h-20 w-auto sm:h-24" />
+      <h1 class="text-5xl font-semibold text-white sm:text-7xl">Team</h1>
+    </div>
+
+    <section class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {
+        members.map((member) => (
+          <article class="overflow-hidden rounded-xl bg-[#5c2a42]/85 ring-1 ring-white/5">
+            <img
+              src={member.image}
+              alt={member.name}
+              class="h-[26rem] w-full rounded-xl bg-[#4b1e36] object-contain p-2 sm:h-[30rem]"
+              loading="lazy"
+              draggable="false"
+            />
+            <div class="p-6">
+              <h2 class="text-lg font-semibold text-[#db74a8]">
+                {member.name}
+              </h2>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {member.links.map((link) => (
+                  <a
+                    href={link.href}
+                    class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/90 text-[#4b58ce] ring-1 ring-black/5 transition-colors hover:bg-white"
+                    aria-label={link.label}
+                    target={link.href.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      link.href.startsWith("http") ? "noreferrer" : undefined
+                    }
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      class="h-4.5 w-4.5"
+                      aria-hidden="true"
+                    >
+                      <path d={socialIcons[link.label]} />
+                    </svg>
+                  </a>
+                ))}
+              </div>
+              <p class="mt-4 text-sm leading-relaxed text-white/80">
+                {member.bio}
+              </p>
+            </div>
+          </article>
+        ))
+      }
+    </section>
+  </div>
+</Layout>
