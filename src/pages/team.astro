@@ -38,7 +38,10 @@ const members: TeamMember[] = [
     links: [
       { label: "Email", href: "mailto:niko@kiwihacks.org" },
       { label: "Phone", href: "tel:0221350419" },
-      { label: "Instagram", href: "https://www.instagram.com/niko_p101/?hl=en" },
+      {
+        label: "Instagram",
+        href: "https://www.instagram.com/niko_p101/?hl=en",
+      },
       {
         label: "LinkedIn",
         href: "https://www.linkedin.com/in/nikopurdie?originalSubdomain=nz",
@@ -127,30 +130,29 @@ const members: TeamMember[] = [
 ];
 ---
 
-<Layout title="KiwiHacks Nova | Team" description="Meet the KiwiHacks Nova team.">
+<Layout
+  title="KiwiHacks Nova | Team"
+  description="Meet the KiwiHacks Nova team."
+>
   <div class="mx-auto max-w-5xl px-5 pt-6 pb-24">
     <a
       href="/"
       class="inline-flex items-center gap-2 rounded-xl bg-[#4f46e5] px-4 py-2 text-sm font-medium text-white no-underline transition-colors hover:bg-[#5b52ee]"
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        class="h-4 w-4"
-        aria-hidden="true"
-      >
+      <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
         <path
           d="M15 19l-7-7 7-7"
           stroke="currentColor"
           stroke-width="2.5"
           stroke-linecap="round"
-          stroke-linejoin="round"
-        ></path>
+          stroke-linejoin="round"></path>
       </svg>
       Back
     </a>
 
-    <div class="mt-8 flex flex-wrap items-center justify-center gap-4 sm:justify-start">
+    <div
+      class="mt-8 flex flex-wrap items-center justify-center gap-4 sm:justify-start"
+    >
       <NovaLogo class="h-20 w-auto sm:h-24" />
       <h1 class="text-5xl font-semibold text-white sm:text-7xl">Team</h1>
     </div>
@@ -171,26 +173,26 @@ const members: TeamMember[] = [
                 {member.name}
               </h2>
               <div class="mt-3 flex flex-wrap gap-2">
-                {
-                  member.links.map((link) => (
-                    <a
-                      href={link.href}
-                      class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/90 text-[#4b58ce] ring-1 ring-black/5 transition-colors hover:bg-white"
-                      aria-label={link.label}
-                      target={link.href.startsWith("http") ? "_blank" : undefined}
-                      rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+                {member.links.map((link) => (
+                  <a
+                    href={link.href}
+                    class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/90 text-[#4b58ce] ring-1 ring-black/5 transition-colors hover:bg-white"
+                    aria-label={link.label}
+                    target={link.href.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      link.href.startsWith("http") ? "noreferrer" : undefined
+                    }
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      class="h-4.5 w-4.5"
+                      aria-hidden="true"
                     >
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="h-4.5 w-4.5"
-                        aria-hidden="true"
-                      >
-                        <path d={socialIcons[link.label]}></path>
-                      </svg>
-                    </a>
-                  ))
-                }
+                      <path d={socialIcons[link.label]} />
+                    </svg>
+                  </a>
+                ))}
               </div>
               <p class="mt-4 text-sm leading-relaxed text-white/80">
                 {member.bio}
