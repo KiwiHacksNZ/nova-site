@@ -170,16 +170,18 @@ const activeCity = cityBySlug(slug) ?? null;
   });
 
   // Handle city selection: save to localStorage and navigate
-  document.querySelectorAll<HTMLButtonElement>("[data-city-select]").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const citySlug = btn.dataset.citySelect;
-      if (citySlug) {
-        localStorage.setItem("selectedCity", citySlug);
-        window.location.href = `/${citySlug}`;
-      }
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-city-select]")
+    .forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const citySlug = btn.dataset.citySelect;
+        if (citySlug) {
+          localStorage.setItem("selectedCity", citySlug);
+          window.location.href = `/${citySlug}`;
+        }
+      });
     });
-  });
 
   document.addEventListener("mousedown", (e) => {
     if (root && !root.contains(e.target as Node)) setOpen(false);

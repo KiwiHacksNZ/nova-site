@@ -19,7 +19,8 @@
 </a>
 
 <script>
-  const backButton = document.querySelector<HTMLAnchorElement>("[data-back-button]");
+  const backButton =
+    document.querySelector<HTMLAnchorElement>("[data-back-button]");
   if (backButton) {
     const savedCity = localStorage.getItem("selectedCity");
     if (savedCity) {
