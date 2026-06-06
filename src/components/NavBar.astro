@@ -92,13 +92,14 @@ const activeCity = cityBySlug(slug) ?? null;
         >
           {
             CITIES.map((city) => (
-              <a
-                href={`/${city.slug}`}
-                class="flex w-full items-baseline justify-between gap-4 px-4 py-1.5 text-left no-underline transition-colors hover:bg-white/10"
+              <button
+                type="button"
+                data-city-select={city.slug}
+                class="flex w-full items-baseline justify-between gap-4 px-4 py-1.5 text-left transition-colors hover:bg-white/10"
               >
                 <span class="text-lg text-white">{city.name}</span>
                 <span class="text-xs text-white/70">{city.date}</span>
-              </a>
+              </button>
             ))
           }
         </div>
@@ -114,6 +115,8 @@ const activeCity = cityBySlug(slug) ?? null;
 </header>
 
 <script>
+  import { CITIES } from "../data/cities";
+
   const mobileMenuToggle = document.querySelector<HTMLButtonElement>(
     "[data-mobile-menu-toggle]",
   );
@@ -145,9 +148,37 @@ const activeCity = cityBySlug(slug) ?? null;
     if (chevron) chevron.classList.toggle("rotate-180", open);
   }
 
+  // Update the button label to show saved city if available
+  function updateCityLabel() {
+    if (!toggle) return;
+    const savedCity = localStorage.getItem("selectedCity");
+    if (savedCity) {
+      const city = CITIES.find((c) => c.slug === savedCity);
+      if (city) {
+        const span = toggle.querySelector("span");
+        if (span) span.textContent = city.name;
+      }
+    }
+  }
+
+  // Restore city label on page load
+  updateCityLabel();
+
   toggle?.addEventListener("click", (e) => {
     e.stopPropagation();
     setOpen(panel?.hidden ?? false);
+  });
+
+  // Handle city selection: save to localStorage and navigate
+  document.querySelectorAll<HTMLButtonElement>("[data-city-select]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const citySlug = btn.dataset.citySelect;
+      if (citySlug) {
+        localStorage.setItem("selectedCity", citySlug);
+        window.location.href = `/${citySlug}`;
+      }
+    });
   });
 
   document.addEventListener("mousedown", (e) => {

@@ -1,6 +1,8 @@
 ---
+import "../styles/global.css";
 import Layout from "../layouts/Layout.astro";
 import NovaLogo from "../components/NovaLogo.astro";
+import BackButton from "../components/BackButton.astro";
 type Faq = { q: string; a: string };
 
 const FAQ_ITEMS: Faq[] = [
@@ -41,21 +43,7 @@ const FAQ_ITEMS: Faq[] = [
 
 <Layout title="FAQ | KiwiHacks Nova">
   <div class="mx-auto max-w-5xl px-5 pt-6 pb-24">
-    {/* Back button */}
-    <a
-      href="/"
-      class="inline-flex items-center gap-2 rounded-xl bg-[#4f46e5] px-4 py-2 text-sm font-medium text-white no-underline transition-colors hover:bg-[#5b52ee]"
-    >
-      <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
-        <path
-          d="M15 19l-7-7 7-7"
-          stroke="white"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-      </svg>
-      Back
-    </a>
+    <BackButton />
 
     {/* Logo + FAQ heading */}
     <div

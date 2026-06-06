@@ -22,6 +22,34 @@ const {
     <link rel="icon" type="image/png" href="/nova-logo.png" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <script>
+      // Restore city selector label from localStorage immediately to prevent flash
+      const savedCity = localStorage.getItem("selectedCity");
+      if (savedCity) {
+        const cityNames = {
+          wellington: "Wellington",
+          christchurch: "Christchurch",
+          auckland: "Auckland",
+        };
+        const cityName = cityNames[savedCity];
+        if (cityName) {
+          const observer = new MutationObserver(() => {
+            const toggle = document.querySelector("[data-city-toggle]");
+            if (toggle) {
+              const span = toggle.querySelector("span");
+              if (span && span.textContent !== cityName) {
+                span.textContent = cityName;
+              }
+              observer.disconnect();
+            }
+          });
+          observer.observe(document.documentElement, {
+            childList: true,
+            subtree: true,
+          });
+        }
+      }
+    </script>
   </head>
   <body class="flex min-h-full flex-col">
     <NavBar />
