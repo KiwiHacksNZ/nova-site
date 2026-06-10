@@ -2,8 +2,10 @@
 import Layout from "../layouts/Layout.astro";
 import CityHome from "../components/CityHome.astro";
 import { DEFAULT_CITY } from "../data/cities";
+import { city as cityState } from "../state";
 
-// Root "/" defaults to Auckland. Other cities live at "/wellington", "/christchurch", "/auckland".
+// Set the default city in state
+cityState.set(DEFAULT_CITY);
 ---
 
 <Layout>
@@ -11,9 +13,23 @@ import { DEFAULT_CITY } from "../data/cities";
 </Layout>
 
 <script>
-  // If a city is saved in localStorage, redirect to that city's page
-  const savedCity = localStorage.getItem("selectedCity");
-  if (savedCity) {
-    window.location.href = `/${savedCity}`;
-  }
+  import { city } from "../state";
+
+  // Subscribe to city changes and re-render CityHome
+  city.subscribe((newCity) => {
+    // Update the city name display
+    const cityName = document.querySelector("p.mt-8");
+    if (cityName) {
+      cityName.textContent = `${newCity.name}'s free 24-hour hackathon for high school students`;
+    }
+
+    // Update the pink banner with city name and date
+    const banner = document.querySelector(".bg-\\[\\#cf6da0\\]");
+    if (banner) {
+      const p = banner.querySelector("p");
+      if (p) {
+        p.textContent = `${newCity.name}  ·  ${newCity.date}  ·  Location TBC`;
+      }
+    }
+  });
 </script>

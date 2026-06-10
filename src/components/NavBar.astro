@@ -1,14 +1,10 @@
 ---
 import NovaLogo from "./NovaLogo.astro";
-import { CITIES, DEFAULT_CITY_SLUG, cityBySlug } from "../data/cities";
+import { CITIES } from "../data/cities";
+import { city } from "../state";
 
-// Current city is derived from the URL. "/" defaults to Auckland.
-// On non-city routes (e.g. /faq) there is no active city, so the button reads "Select City".
-const pathname = Astro.url.pathname;
-const normalized = pathname.replace(/\/$/, "") || "/";
-const slug =
-  normalized === "/" ? DEFAULT_CITY_SLUG : normalized.replace(/^\//, "");
-const activeCity = cityBySlug(slug) ?? null;
+// Current city from state
+const activeCity = city.get();
 ---
 
 <!-- The bar plus its bright pink gradient underline strip. -->
@@ -67,7 +63,7 @@ const activeCity = cityBySlug(slug) ?? null;
           class="flex w-full items-center justify-center gap-3 rounded-xl bg-[#4f46e5] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
         >
           <span class="truncate whitespace-nowrap">
-            {activeCity ? activeCity.name : "Select City"}
+            {activeCity.name}
           </span>
           <svg
             viewBox="0 0 24 24"
@@ -115,7 +111,8 @@ const activeCity = cityBySlug(slug) ?? null;
 </header>
 
 <script>
-  import { CITIES } from "../data/cities";
+  import { CITIES, cityBySlug } from "../data/cities";
+  import { city } from "../state";
 
   const mobileMenuToggle = document.querySelector<HTMLButtonElement>(
     "[data-mobile-menu-toggle]",
@@ -148,28 +145,19 @@ const activeCity = cityBySlug(slug) ?? null;
     if (chevron) chevron.classList.toggle("rotate-180", open);
   }
 
-  // Update the button label to show saved city if available
-  function updateCityLabel() {
+  // Update button label when state changes
+  const unsubscribe = city.subscribe((newCity) => {
     if (!toggle) return;
-    const savedCity = localStorage.getItem("selectedCity");
-    if (savedCity) {
-      const city = CITIES.find((c) => c.slug === savedCity);
-      if (city) {
-        const span = toggle.querySelector("span");
-        if (span) span.textContent = city.name;
-      }
-    }
-  }
-
-  // Restore city label on page load
-  updateCityLabel();
+    const span = toggle.querySelector("span");
+    if (span) span.textContent = newCity.name;
+  });
 
   toggle?.addEventListener("click", (e) => {
     e.stopPropagation();
     setOpen(panel?.hidden ?? false);
   });
 
-  // Handle city selection: save to localStorage and navigate
+  // Handle city selection: set state
   document
     .querySelectorAll<HTMLButtonElement>("[data-city-select]")
     .forEach((btn) => {
@@ -177,8 +165,11 @@ const activeCity = cityBySlug(slug) ?? null;
         e.preventDefault();
         const citySlug = btn.dataset.citySelect;
         if (citySlug) {
-          localStorage.setItem("selectedCity", citySlug);
-          window.location.href = `/${citySlug}`;
+          const selectedCity = cityBySlug(citySlug);
+          if (selectedCity) {
+            city.set(selectedCity);
+            setOpen(false);
+          }
         }
       });
     });
