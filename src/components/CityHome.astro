@@ -2,11 +2,7 @@
 import NovaLogo from "./NovaLogo.astro";
 import { SIGNUP_URL, type City } from "../data/cities";
 
-// Home page content, driven by the city in the URL ("/" defaults to Auckland).
-interface Props {
-  city: City;
-}
-
+// This component now reads city from the state
 const { city } = Astro.props;
 
 const galleryImages = [
