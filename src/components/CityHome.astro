@@ -88,21 +88,70 @@ const galleryImages = [
       </p>
     </div>
 
-    <div
-      class="-mx-5 mt-12 flex snap-x gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 sm:pb-0"
-    >
-      {
-        galleryImages.map((src, index) => (
-          <div class="aspect-[4/3] w-[82vw] shrink-0 snap-center overflow-hidden rounded-2xl shadow-lg ring-1 ring-white/10 sm:w-full">
-            <img
-              src={src}
-              alt="KiwiHacks event photo"
-              loading="lazy"
-              class={`h-full w-full object-cover ${index === galleryImages.length - 1 ? "origin-left scale-110 object-left" : ""}`}
+    <div class="relative mt-12" data-carousel>
+      <div
+        data-carousel-track
+        class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth rounded-2xl shadow-lg ring-1 ring-white/10"
+      >
+        {
+          galleryImages.map((src, index) => (
+            <div class="aspect-[16/9] w-full shrink-0 snap-center overflow-hidden">
+              <img
+                src={src}
+                alt="KiwiHacks event photo"
+                loading="lazy"
+                class={`h-full w-full object-cover ${index === galleryImages.length - 1 ? "origin-left scale-110 object-left" : ""}`}
+              />
+            </div>
+          ))
+        }
+      </div>
+
+      {/* Prev / Next arrows */}
+      <button
+        type="button"
+        data-carousel-prev
+        aria-label="Previous photo"
+        class="absolute top-1/2 left-3 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur transition-colors hover:bg-black/60"
+      >
+        <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true">
+          <path
+            d="M15 6l-6 6 6 6"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        data-carousel-next
+        aria-label="Next photo"
+        class="absolute top-1/2 right-3 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur transition-colors hover:bg-black/60"
+      >
+        <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true">
+          <path
+            d="M9 6l6 6-6 6"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </button>
+
+      {/* Dot indicators */}
+      <div class="mt-4 flex items-center justify-center gap-2">
+        {
+          galleryImages.map((_, index) => (
+            <button
+              type="button"
+              data-carousel-dot={index}
+              aria-label={`Go to photo ${index + 1}`}
+              class="h-2.5 w-2.5 rounded-full bg-white/30 transition-colors data-[active=true]:bg-white"
             />
-          </div>
-        ))
-      }
+          ))
+        }
+      </div>
     </div>
   </section>
 
@@ -110,3 +159,77 @@ const galleryImages = [
     /* Partners section hidden for now. Re-enable once we have partners to show. */
   }
 </div>
+
+<script>
+  // Photo carousel: scroll-snap track driven by arrow buttons, dots,
+  // and a paused-on-interaction autoplay loop.
+  document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {
+    const track = root.querySelector<HTMLElement>("[data-carousel-track]");
+    const prev = root.querySelector<HTMLButtonElement>("[data-carousel-prev]");
+    const next = root.querySelector<HTMLButtonElement>("[data-carousel-next]");
+    const dots = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-carousel-dot]"),
+    );
+    if (!track) return;
+
+    const slideCount = track.children.length;
+    let activeIndex = 0;
+    let autoplay: ReturnType<typeof setInterval> | undefined;
+
+    function setActive(index: number) {
+      activeIndex = (index + slideCount) % slideCount;
+      dots.forEach((dot, i) =>
+        dot.toggleAttribute("data-active", i === activeIndex),
+      );
+    }
+
+    function goTo(index: number, smooth = true) {
+      setActive(index);
+      const slide = track?.children[activeIndex] as HTMLElement | undefined;
+      if (slide) {
+        track?.scrollTo({
+          left: slide.offsetLeft,
+          behavior: smooth ? "smooth" : "auto",
+        });
+      }
+    }
+
+    function startAutoplay() {
+      stopAutoplay();
+      autoplay = setInterval(() => goTo(activeIndex + 1), 6000);
+    }
+
+    function stopAutoplay() {
+      if (autoplay) clearInterval(autoplay);
+    }
+
+    prev?.addEventListener("click", () => {
+      goTo(activeIndex - 1);
+      startAutoplay();
+    });
+
+    next?.addEventListener("click", () => {
+      goTo(activeIndex + 1);
+      startAutoplay();
+    });
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener("click", () => {
+        goTo(i);
+        startAutoplay();
+      });
+    });
+
+    // Keep dots in sync when the user swipes/scrolls the track directly.
+    track.addEventListener("scroll", () => {
+      const index = Math.round(track.scrollLeft / track.clientWidth);
+      setActive(index);
+    });
+
+    root.addEventListener("mouseenter", stopAutoplay);
+    root.addEventListener("mouseleave", startAutoplay);
+
+    setActive(0);
+    startAutoplay();
+  });
+</script>
