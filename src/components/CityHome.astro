@@ -124,7 +124,7 @@ const galleryImages = [img1, img2, img3, img4, img5, img6];
         type="button"
         data-carousel-prev
         aria-label="Previous photo"
-        class="absolute top-1/2 left-4 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white shadow-xl backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:border-white/40 hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
+        class="absolute top-1/2 left-4 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white transition-all duration-200 hover:scale-110 hover:bg-black/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
       >
         <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" aria-hidden="true">
           <path
@@ -141,7 +141,7 @@ const galleryImages = [img1, img2, img3, img4, img5, img6];
         type="button"
         data-carousel-next
         aria-label="Next photo"
-        class="absolute top-1/2 right-4 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white shadow-xl backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:border-white/40 hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
+        class="absolute top-1/2 right-4 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white transition-all duration-200 hover:scale-110 hover:bg-black/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
       >
         <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" aria-hidden="true">
           <path
@@ -161,11 +161,11 @@ const galleryImages = [img1, img2, img3, img4, img5, img6];
               type="button"
               data-carousel-dot={index}
               aria-label={`Go to photo ${index + 1}`}
-              class="flex h-5 items-center justify-center px-0.5"
+              class="flex h-6 w-6 items-center justify-center rounded-full"
             >
               <span
                 data-carousel-dot-inner
-                class="block h-2 w-2 rounded-full bg-white/30 transition-all duration-300"
+                class="block h-2.5 w-2.5 rounded-full bg-white/30 transition-colors"
               />
             </button>
           ))
