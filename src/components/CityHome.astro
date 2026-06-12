@@ -1,5 +1,4 @@
 ---
-import NovaLogo from "./NovaLogo.astro";
 import { SIGNUP_URL, type City } from "../data/cities";
 
 // This component now reads city from the state
@@ -18,16 +17,14 @@ const galleryImages = [
 <div
   class="mx-auto flex max-w-5xl flex-col items-center px-5 pt-16 pb-24 text-center sm:pt-24"
 >
-  {/* 1. Big centered Nova logo + By KiwiHacks (links to kiwihacks.org) */}
-  <div class="flex flex-col items-center">
-    <NovaLogo class="h-40 sm:h-60" />
-    <a
-      href="https://kiwihacks.org"
-      class="-mt-9 self-end text-xl text-white/90 no-underline transition-colors hover:text-white sm:-mt-14 sm:mr-6"
-    >
-      By KiwiHacks
-    </a>
-  </div>
+  {/* 1. Big centered KiwiHacks presents... Nova logo */}
+  <a href="https://kiwihacks.org" class="no-underline">
+    <img
+      src="/images/Kiwihacks_-_Nova_Logo_2.png"
+      alt="KiwiHacks presents Nova"
+      class="h-64 w-auto select-none sm:h-80"
+    />
+  </a>
 
   {/* 2. City subtitle */}
   <p class="mt-8 max-w-2xl text-xl text-white sm:text-2xl">
