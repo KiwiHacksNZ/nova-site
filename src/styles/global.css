@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
-/* Geist + Geist Mono via fontsource (replaces next/font). */
-@import "@fontsource-variable/geist";
-@import "@fontsource-variable/geist-mono";
+@font-face {
+  font-family: "Jua";
+  src: url("/Jua-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* Nova brand palette, sampled from the design mockups. */
@@ -11,7 +15,7 @@
   --nova-foreground: #ffffff;
 
   /* Font variables, matching the old next/font setup. */
-  --font-geist-sans: "Geist Variable", Arial, Helvetica, sans-serif;
+  --font-geist-sans: "Jua", Arial, Helvetica, sans-serif;
   --font-geist-mono: "Geist Mono Variable", ui-monospace, monospace;
 }
 
