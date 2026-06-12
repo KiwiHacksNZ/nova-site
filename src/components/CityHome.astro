@@ -1,37 +1,38 @@
 ---
+import { Image } from "astro:assets";
 import { SIGNUP_URL, type City } from "../data/cities";
+import heroLogo from "../assets/images/Kiwihacks_-_Nova_Logo_2.png";
+import img1 from "../assets/images/DSCF3841.jpg";
+import img2 from "../assets/images/DSCF4012.jpg";
+import img3 from "../assets/images/DSCF2200.jpg";
+import img4 from "../assets/images/DSCF3768.jpg";
+import img5 from "../assets/images/DSCF3771.jpg";
+import img6 from "../assets/images/DSCF7194.jpg";
 
-// This component now reads city from the state
 const { city } = Astro.props;
 
-const galleryImages = [
-  "/images/DSCF3841.jpg",
-  "/images/DSCF4012.jpg",
-  "/images/DSCF2200.jpg",
-  "/images/DSCF3768.jpg",
-  "/images/DSCF3771.jpg",
-  "/images/DSCF7194.jpg",
-];
+const galleryImages = [img1, img2, img3, img4, img5, img6];
 ---
 
 <div
   class="mx-auto flex max-w-5xl flex-col items-center px-5 pt-16 pb-24 text-center sm:pt-24"
 >
-  {/* 1. Big centered KiwiHacks presents... Nova logo */}
-  <img
-    src="/images/Kiwihacks_-_Nova_Logo_2.png"
+  <Image
+    src={heroLogo}
     alt="KiwiHacks presents Nova"
+    width={448}
+    height={448}
+    fetchpriority="high"
+    loading="eager"
     class="h-80 w-auto select-none sm:h-[28rem]"
   />
 
-  {/* 2. City subtitle */}
   <p class="mt-8 max-w-2xl text-xl text-white sm:text-2xl">
     {city.name}&apos;s free 24-hour hackathon for high school students
   </p>
 
-  {/* 3. Pink banner: city + date (Location/People still TBC) */}
   <div
-    class="mt-7 w-full rounded-[2rem] bg-[#cf6da0] px-6 py-7 text-center shadow-lg"
+    class="mt-7 w-full rounded-[2rem] bg-[#aa4176] px-6 py-7 text-center shadow-lg"
   >
     <p
       class="text-lg font-semibold uppercase tracking-wide text-white sm:text-2xl"
@@ -43,7 +44,6 @@ const galleryImages = [
     </p>
   </div>
 
-  {/* 4. Sign up button */}
   <div class="mt-9">
     <a
       href={SIGNUP_URL}
@@ -53,7 +53,6 @@ const galleryImages = [
     </a>
   </div>
 
-  {/* 5. About Nova */}
   <section class="mt-24 w-full">
     <h2 class="text-center text-4xl font-semibold text-white sm:text-5xl">
       About Nova
@@ -88,33 +87,46 @@ const galleryImages = [
       </p>
     </div>
 
-    <div class="relative mt-12" data-carousel>
+    <div class="group relative mt-12" data-carousel>
+      {/* Track — scrollbar hidden across all browsers */}
       <div
         data-carousel-track
-        class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth rounded-2xl shadow-lg ring-1 ring-white/10"
+        class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth rounded-2xl shadow-2xl ring-1 ring-white/10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
         {
           galleryImages.map((src, index) => (
-            <div class="aspect-[16/9] w-full shrink-0 snap-center overflow-hidden">
-              <img
+            <div class="relative aspect-[16/9] w-full shrink-0 snap-center overflow-hidden">
+              <Image
                 src={src}
                 alt="KiwiHacks event photo"
-                loading="lazy"
+                width={960}
+                height={640}
+                loading={index === 0 ? "eager" : "lazy"}
                 class={`h-full w-full object-cover ${index === galleryImages.length - 1 ? "origin-left scale-110 object-left" : ""}`}
               />
+              {/* Bottom vignette for depth */}
+              <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/40 to-transparent" />
             </div>
           ))
         }
       </div>
 
-      {/* Prev / Next arrows */}
+      {/* Photo counter */}
+      <div
+        data-carousel-counter
+        class="absolute right-4 bottom-4 rounded-full bg-black/50 px-3 py-1 text-xs font-medium tabular-nums text-white/80 backdrop-blur-sm"
+      >
+        1 / {galleryImages.length}
+      </div>
+
+      {/* Prev arrow — always visible on mobile, fades in on desktop hover */}
       <button
         type="button"
         data-carousel-prev
         aria-label="Previous photo"
-        class="absolute top-1/2 left-3 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur transition-colors hover:bg-black/60"
+        class="absolute top-1/2 left-4 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white shadow-xl backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:border-white/40 hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
       >
-        <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" aria-hidden="true">
           <path
             d="M15 6l-6 6 6 6"
             stroke="currentColor"
@@ -123,13 +135,15 @@ const galleryImages = [
             stroke-linejoin="round"></path>
         </svg>
       </button>
+
+      {/* Next arrow */}
       <button
         type="button"
         data-carousel-next
         aria-label="Next photo"
-        class="absolute top-1/2 right-3 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur transition-colors hover:bg-black/60"
+        class="absolute top-1/2 right-4 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white shadow-xl backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:border-white/40 hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
       >
-        <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" aria-hidden="true">
           <path
             d="M9 6l6 6-6 6"
             stroke="currentColor"
@@ -139,34 +153,34 @@ const galleryImages = [
         </svg>
       </button>
 
-      {/* Dot indicators */}
-      <div class="mt-4 flex items-center justify-center gap-2">
+      {/* Dot indicators — active dot expands to a pill */}
+      <div class="mt-4 flex items-center justify-center gap-1.5">
         {
           galleryImages.map((_, index) => (
             <button
               type="button"
               data-carousel-dot={index}
               aria-label={`Go to photo ${index + 1}`}
-              class="h-2.5 w-2.5 rounded-full bg-white/30 transition-colors data-[active=true]:bg-white"
-            />
+              class="flex h-5 items-center justify-center px-0.5"
+            >
+              <span
+                data-carousel-dot-inner
+                class="block h-2 w-2 rounded-full bg-white/30 transition-all duration-300"
+              />
+            </button>
           ))
         }
       </div>
     </div>
   </section>
-
-  {
-    /* Partners section hidden for now. Re-enable once we have partners to show. */
-  }
 </div>
 
 <script>
-  // Photo carousel: scroll-snap track driven by arrow buttons, dots,
-  // and a paused-on-interaction autoplay loop.
   document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {
     const track = root.querySelector<HTMLElement>("[data-carousel-track]");
     const prev = root.querySelector<HTMLButtonElement>("[data-carousel-prev]");
     const next = root.querySelector<HTMLButtonElement>("[data-carousel-next]");
+    const counter = root.querySelector<HTMLElement>("[data-carousel-counter]");
     const dots = Array.from(
       root.querySelectorAll<HTMLButtonElement>("[data-carousel-dot]"),
     );
@@ -178,9 +192,19 @@ const galleryImages = [
 
     function setActive(index: number) {
       activeIndex = (index + slideCount) % slideCount;
-      dots.forEach((dot, i) =>
-        dot.toggleAttribute("data-active", i === activeIndex),
-      );
+      if (counter) counter.textContent = `${activeIndex + 1} / ${slideCount}`;
+      dots.forEach((dot, i) => {
+        dot.toggleAttribute("data-active", i === activeIndex);
+        const inner = dot.querySelector<HTMLElement>(
+          "[data-carousel-dot-inner]",
+        );
+        if (inner) {
+          inner.classList.toggle("w-6", i === activeIndex);
+          inner.classList.toggle("bg-white", i === activeIndex);
+          inner.classList.toggle("w-2", i !== activeIndex);
+          inner.classList.toggle("bg-white/30", i !== activeIndex);
+        }
+      });
     }
 
     function goTo(index: number, smooth = true) {
@@ -220,7 +244,6 @@ const galleryImages = [
       });
     });
 
-    // Keep dots in sync when the user swipes/scrolls the track directly.
     track.addEventListener("scroll", () => {
       const index = Math.round(track.scrollLeft / track.clientWidth);
       setActive(index);
