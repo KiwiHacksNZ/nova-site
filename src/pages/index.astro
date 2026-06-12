@@ -9,27 +9,5 @@ cityState.set(DEFAULT_CITY);
 ---
 
 <Layout>
-  <CityHome city={DEFAULT_CITY} />
+ <h1> Nova Landing page with a map goes here </h1>
 </Layout>
-
-<script>
-  import { city } from "../state";
-
-  // Subscribe to city changes and re-render CityHome
-  city.subscribe((newCity) => {
-    // Update the city name display
-    const cityName = document.querySelector("p.mt-8");
-    if (cityName) {
-      cityName.textContent = `${newCity.name}'s free 24-hour hackathon for high school students`;
-    }
-
-    // Update the pink banner with city name and date
-    const banner = document.querySelector(".bg-\\[\\#cf6da0\\]");
-    if (banner) {
-      const p = banner.querySelector("p");
-      if (p) {
-        p.textContent = `${newCity.name}  ·  ${newCity.date}  ·  Location TBC`;
-      }
-    }
-  });
-</script>
