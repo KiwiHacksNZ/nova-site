@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CityHome from "../components/CityHome.astro";
+import { CITIES, cityBySlug } from "../data/cities";
+import { city as cityState } from "../state";
+
+export function getStaticPaths() {
+  return CITIES.map((c) => ({ params: { city: c.slug } }));
+}
+
+const { city: slug } = Astro.params;
+const cityData = cityBySlug(slug)!;
+cityState.set(cityData);
+
+const eventSchema = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: `KiwiHacks Nova ${cityData.name}`,
+  startDate: slug === "wellington" ? "2026-09-28" : slug === "christchurch" ? "2026-10-02" : "2026-10-10",
+  endDate: slug === "wellington" ? "2026-09-29" : slug === "christchurch" ? "2026-10-03" : "2026-10-11",
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  isAccessibleForFree: true,
+  location: {
+    "@type": "Place",
+    name: cityData.name,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: cityData.name,
+      addressCountry: "NZ",
+    },
+  },
+  organizer: {
+    "@type": "Organization",
+    name: "KiwiHacks",
+    url: "https://kiwihacks.org",
+  },
+  description:
+    "A free 24-hour hackathon for New Zealand high school students. No experience needed — food, mentors, and workshops all included.",
+  url: `https://nova.kiwihacks.org/${slug}`,
+};
+---
+
+<Layout
+  title={`KiwiHacks Nova ${cityData.name}: Free 24-Hour Hackathon`}
+  description={`KiwiHacks Nova is coming to ${cityData.name} on ${cityData.date}. Free 24-hour hackathon for NZ high school students — no experience needed.`}
+  ogImage="/og-image.png"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(eventSchema)} />
+  <CityHome city={cityData} />
+</Layout>

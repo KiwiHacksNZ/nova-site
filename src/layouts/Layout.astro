@@ -15,10 +15,7 @@ const {
   ogImage = "/nova-logo.png",
 } = Astro.props;
 
-const canonicalURL = new URL(
-  Astro.url.pathname,
-  Astro.site ?? "https://nova.kiwihacks.org.nz",
-);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? "https://nova.kiwihacks.org");
 ---
 
 <!doctype html>
@@ -26,7 +23,11 @@ const canonicalURL = new URL(
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/nova-logo.png" />
+    <meta name="theme-color" content="#0a0d28" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/nova-logo.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="canonical" href={canonicalURL} />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -41,6 +42,15 @@ const canonicalURL = new URL(
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(ogImage, canonicalURL)} />
+    <!-- Organization schema -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "KiwiHacks",
+      "url": "https://nova.kiwihacks.org",
+      "description": "New Zealand's first high school hackathon club, built and run entirely by teenagers.",
+      "sameAs": ["https://kiwihacks.org"]
+    })} />
     <script>
       // Restore city selector label from localStorage immediately to prevent flash
       const savedCity = localStorage.getItem("selectedCity");

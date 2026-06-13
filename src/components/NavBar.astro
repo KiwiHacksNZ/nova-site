@@ -88,14 +88,14 @@ const activeCity = city.get();
         >
           {
             CITIES.map((city) => (
-              <button
-                type="button"
+              <a
+                href={`/${city.slug}`}
                 data-city-select={city.slug}
-                class="flex w-full items-baseline justify-between gap-4 px-4 py-1.5 text-left transition-colors hover:bg-white/10"
+                class="flex w-full items-baseline justify-between gap-4 px-4 py-1.5 text-left no-underline transition-colors hover:bg-white/10"
               >
                 <span class="text-lg text-white">{city.name}</span>
                 <span class="text-xs text-white/70">{city.date}</span>
-              </button>
+              </a>
             ))
           }
         </div>
@@ -145,7 +145,20 @@ const activeCity = city.get();
     if (chevron) chevron.classList.toggle("rotate-180", open);
   }
 
-  // Update button label when state changes
+  // Sync button label: prefer URL-based city, fall back to state
+  function syncLabel() {
+    if (!toggle) return;
+    const span = toggle.querySelector("span");
+    if (!span) return;
+    const pathSlug = window.location.pathname.replace(/^\//, "");
+    const urlCity = cityBySlug(pathSlug);
+    if (urlCity) {
+      span.textContent = urlCity.name;
+      city.set(urlCity);
+    }
+  }
+  syncLabel();
+
   const unsubscribe = city.subscribe((newCity) => {
     if (!toggle) return;
     const span = toggle.querySelector("span");
@@ -157,20 +170,18 @@ const activeCity = city.get();
     setOpen(panel?.hidden ?? false);
   });
 
-  // Handle city selection: set state
+  // City links: update state (for home page live-swap) and close dropdown.
+  // Navigation to /{slug} is handled by the href — no preventDefault.
   document
-    .querySelectorAll<HTMLButtonElement>("[data-city-select]")
-    .forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const citySlug = btn.dataset.citySelect;
+    .querySelectorAll<HTMLAnchorElement>("[data-city-select]")
+    .forEach((link) => {
+      link.addEventListener("click", () => {
+        const citySlug = link.dataset.citySelect;
         if (citySlug) {
           const selectedCity = cityBySlug(citySlug);
-          if (selectedCity) {
-            city.set(selectedCity);
-            setOpen(false);
-          }
+          if (selectedCity) city.set(selectedCity);
         }
+        setOpen(false);
       });
     });
 

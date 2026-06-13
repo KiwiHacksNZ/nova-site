@@ -39,9 +39,23 @@ const FAQ_ITEMS: Faq[] = [
     a: "Email niko@kiwihacks.org or join the KiwiHackers Discord at kiwihacks.org/discord. We reply fast.",
   },
 ];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+};
 ---
 
 <Layout title="FAQ | KiwiHacks Nova">
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <div class="mx-auto max-w-5xl px-5 pt-6 pb-24">
     <BackButton />
 

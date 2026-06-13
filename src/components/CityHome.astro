@@ -11,12 +11,20 @@ import img6 from "../assets/images/DSCF7194.jpg";
 
 const { city } = Astro.props;
 
-const galleryImages = [img1, img2, img3, img4, img5, img6];
+const galleryImages = [
+  { src: img1, alt: "Students collaborating at a KiwiHacks hackathon" },
+  { src: img2, alt: "Participants presenting their project at KiwiHacks" },
+  { src: img3, alt: "High schoolers building together at KiwiHacks" },
+  { src: img4, alt: "Team working on a hackathon project overnight" },
+  { src: img5, alt: "KiwiHacks participants brainstorming ideas" },
+  { src: img6, alt: "Mentors helping students at a KiwiHacks event" },
+];
 ---
 
 <div
   class="mx-auto flex max-w-5xl flex-col items-center px-5 pt-16 pb-24 text-center sm:pt-24"
 >
+  <h1 class="sr-only">KiwiHacks Nova</h1>
   <Image
     src={heroLogo}
     alt="KiwiHacks presents Nova"
@@ -94,11 +102,11 @@ const galleryImages = [img1, img2, img3, img4, img5, img6];
         class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth rounded-2xl shadow-2xl ring-1 ring-white/10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
         {
-          galleryImages.map((src, index) => (
+          galleryImages.map((img, index) => (
             <div class="relative aspect-[16/9] w-full shrink-0 snap-center overflow-hidden">
               <Image
-                src={src}
-                alt="KiwiHacks event photo"
+                src={img.src}
+                alt={img.alt}
                 width={960}
                 height={640}
                 loading={index === 0 ? "eager" : "lazy"}
