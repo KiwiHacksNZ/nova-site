@@ -15,10 +15,7 @@ const {
   ogImage = "/nova-logo.png",
 } = Astro.props;
 
-const canonicalURL = new URL(
-  Astro.url.pathname,
-  Astro.site ?? "https://nova.kiwihacks.org.nz",
-);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? "https://nova.kiwihacks.org");
 ---
 
 <!doctype html>
