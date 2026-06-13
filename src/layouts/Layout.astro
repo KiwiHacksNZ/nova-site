@@ -38,6 +38,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? "https://nova.kiw
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(ogImage, canonicalURL)} />
+    <!-- Organization schema -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "KiwiHacks",
+      "url": "https://nova.kiwihacks.org",
+      "description": "New Zealand's first high school hackathon club, built and run entirely by teenagers.",
+      "sameAs": ["https://kiwihacks.org"]
+    })} />
     <script>
       // Restore city selector label from localStorage immediately to prevent flash
       const savedCity = localStorage.getItem("selectedCity");

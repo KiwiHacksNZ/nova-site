@@ -6,6 +6,59 @@ import { city as cityState } from "../state";
 
 // Set the default city in state
 cityState.set(DEFAULT_CITY);
+
+const events = [
+  {
+    name: "KiwiHacks Nova Wellington",
+    startDate: "2026-09-28",
+    endDate: "2026-09-29",
+    city: "Wellington",
+  },
+  {
+    name: "KiwiHacks Nova Christchurch",
+    startDate: "2026-10-02",
+    endDate: "2026-10-03",
+    city: "Christchurch",
+  },
+  {
+    name: "KiwiHacks Nova Auckland",
+    startDate: "2026-10-10",
+    endDate: "2026-10-11",
+    city: "Auckland",
+  },
+];
+
+const eventSchemas = events.map((e) => ({
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: e.name,
+  startDate: e.startDate,
+  endDate: e.endDate,
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  isAccessibleForFree: true,
+  location: {
+    "@type": "Place",
+    name: e.city,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: e.city,
+      addressCountry: "NZ",
+    },
+  },
+  organizer: {
+    "@type": "Organization",
+    name: "KiwiHacks",
+    url: "https://kiwihacks.org",
+  },
+  audience: {
+    "@type": "EducationalAudience",
+    educationalRole: "student",
+  },
+  description:
+    "A free 24-hour hackathon for New Zealand high school students. No experience needed — food, mentors, and workshops all included.",
+  url: "https://nova.kiwihacks.org",
+}));
 ---
 
 <Layout
@@ -13,6 +66,9 @@ cityState.set(DEFAULT_CITY);
   description="Nova is a constellation of three free 24-hour hackathons across Wellington, Christchurch, and Auckland — open to all NZ high schoolers, no experience needed."
   ogImage="/og-image.png"
 >
+  {eventSchemas.map((schema) => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))}
   <CityHome city={DEFAULT_CITY} />
 </Layout>
 
