@@ -1,0 +1,31 @@
+# KiwiHacks Nova
+
+> Nova is a constellation of three free 24-hour hackathons for New Zealand high school students, run by KiwiHacks.
+
+## Events
+
+- **Wellington** — 28–29 September 2026
+- **Christchurch** — 2–3 October 2026
+- **Auckland** — 10–11 October 2026
+
+## About
+
+KiwiHacks Nova is open to all NZ high school students (years 9–13). No experience needed. Food, mentors, workshops, and swag are all free — cost is never a barrier at KiwiHacks.
+
+KiwiHacks is New Zealand's first high school hackathon club, built and run entirely by teenagers.
+
+## Pages
+
+- / — Home (city selector)
+- /wellington — Wellington event
+- /christchurch — Christchurch event
+- /auckland — Auckland event
+- /faq — Frequently asked questions
+- /team — The KiwiHacks team
+
+## Contact
+
+- Website: https://kiwihacks.org
+- Sign up: https://kiwihacks.fillout.com/nova
+- Email: niko@kiwihacks.org
+- Discord: https://kiwihacks.org/discord
