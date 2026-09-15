@@ -1,35 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CityHome from "../components/CityHome.astro";
+import CityHint from "../components/CityHint.astro";
 import { DEFAULT_CITY } from "../data/cities";
-import { city as cityState } from "../state";
-
-// Set the default city in state
-cityState.set(DEFAULT_CITY);
 ---
 
+{
+  /*
+  Renders the default city. A stored choice is swapped in before first paint by
+  the inline scripts; visitors without one get the CityHint banner offering the
+  other cities.
+*/
+}
 <Layout>
+  <CityHint />
   <CityHome city={DEFAULT_CITY} />
 </Layout>
-
-<script>
-  import { city } from "../state";
-
-  // Subscribe to city changes and re-render CityHome
-  city.subscribe((newCity) => {
-    // Update the city name display
-    const cityName = document.querySelector("p.mt-8");
-    if (cityName) {
-      cityName.textContent = `${newCity.name}'s free 24-hour hackathon for high school students`;
-    }
-
-    // Update the pink banner with city name and date
-    const banner = document.querySelector(".bg-\\[\\#aa4176\\]");
-    if (banner) {
-      const p = banner.querySelector("p");
-      if (p) {
-        p.textContent = `${newCity.name}  ·  ${newCity.date}  ·  ${newCity.location}`;
-      }
-    }
-  });
-</script>

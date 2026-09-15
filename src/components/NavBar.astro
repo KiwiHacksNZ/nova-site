@@ -1,10 +1,9 @@
 ---
 import NovaLogo from "./NovaLogo.astro";
-import { CITIES } from "../data/cities";
-import { city } from "../state";
+import { CITIES, DEFAULT_CITY } from "../data/cities";
 
-// Current city from state
-const activeCity = city.get();
+// slug -> display name, for the inline label script below.
+const CITY_NAMES = Object.fromEntries(CITIES.map((c) => [c.slug, c.name]));
 ---
 
 <!-- The bar plus its bright pink gradient underline strip. -->
@@ -41,6 +40,13 @@ const activeCity = city.get();
       class="hidden w-full flex-col gap-2 rounded-2xl bg-white/5 p-2 ring-1 ring-white/10 sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-3 sm:bg-transparent sm:p-0 sm:ring-0"
     >
       <a
+        href="/leaderboard"
+        class="block w-full rounded-xl bg-[#4f46e5] px-4 py-2.5 text-center text-sm font-medium text-white no-underline transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
+      >
+        Leaderboard
+      </a>
+
+      <a
         href="/team"
         class="block w-full rounded-xl bg-[#4f46e5] px-4 py-2.5 text-center text-sm font-medium text-white no-underline transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
       >
@@ -71,8 +77,8 @@ const activeCity = city.get();
           aria-expanded="false"
           class="flex w-full items-center justify-center gap-3 rounded-xl bg-[#4f46e5] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
         >
-          <span class="truncate whitespace-nowrap">
-            {activeCity.name}
+          <span class="truncate whitespace-nowrap" data-city-label>
+            {DEFAULT_CITY.name}
           </span>
           <svg
             viewBox="0 0 24 24"
@@ -119,9 +125,22 @@ const activeCity = city.get();
   </div>
 </header>
 
+{
+  /*
+  Sets the label during parse so a stored city never flashes as the default one.
+*/
+}
+<script is:inline define:vars={{ cityNames: CITY_NAMES }}>
+  (function () {
+    var name = cityNames[document.documentElement.dataset.city];
+    var label = document.querySelector("[data-city-label]");
+    if (name && label) label.textContent = name;
+  })();
+</script>
+
 <script>
-  import { CITIES, cityBySlug } from "../data/cities";
-  import { city } from "../state";
+  import { cityBySlug } from "../data/cities";
+  import { activeCity, city, selectCity } from "../state";
 
   const mobileMenuToggle = document.querySelector<HTMLButtonElement>(
     "[data-mobile-menu-toggle]",
@@ -154,11 +173,15 @@ const activeCity = city.get();
     if (chevron) chevron.classList.toggle("rotate-180", open);
   }
 
-  // Update button label when state changes
-  const unsubscribe = city.subscribe((newCity) => {
-    if (!toggle) return;
-    const span = toggle.querySelector("span");
-    if (span) span.textContent = newCity.name;
+  // Publish the resolved city into the store before anything subscribes, so
+  // every subscriber starts from the city the inline scripts already rendered
+  // rather than briefly seeing the default.
+  city.set(activeCity());
+
+  // Update button label when the city changes.
+  city.subscribe((selected) => {
+    const label = toggle?.querySelector("[data-city-label]");
+    if (label) label.textContent = selected.name;
   });
 
   toggle?.addEventListener("click", (e) => {
@@ -176,7 +199,8 @@ const activeCity = city.get();
         if (citySlug) {
           const selectedCity = cityBySlug(citySlug);
           if (selectedCity) {
-            city.set(selectedCity);
+            // Persists the choice, which also hides the hint banner.
+            selectCity(selectedCity);
             setOpen(false);
           }
         }

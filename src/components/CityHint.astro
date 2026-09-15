@@ -1,0 +1,123 @@
+---
+import { CITIES, DEFAULT_CITY } from "../data/cities";
+
+// slug -> display name, for the inline script that fills the banner in.
+const CITY_NAMES = Object.fromEntries(CITIES.map((c) => [c.slug, c.name]));
+---
+
+{
+  /*
+  Shown to visitors who haven't picked a city — whether the city came from the
+  IP guess or is just the default (see the rule in global.css). Once a choice is
+  made the banner is gone for good.
+
+  The markup below is written for the default case; the inline script rewrites
+  the city name and the reason when the middleware guessed one. It only ever
+  runs with the banner visible, so there is no no-JS case to cover.
+
+  The banner element carries no layout of its own, since the reveal rule sets
+  `display: block` on it. Layout lives on the inner wrapper.
+*/
+}
+<div data-city-hint>
+  <div class="mx-auto max-w-5xl px-5 pt-5">
+    <div
+      class="rounded-2xl bg-white/8 px-4 py-3 text-sm ring-1 ring-white/15 sm:px-5"
+    >
+      <div
+        class="flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-center sm:gap-3 sm:text-left"
+      >
+        <p class="text-white/80">
+          We&apos;ve picked <span
+            class="font-semibold text-white"
+            data-city-hint-name>{DEFAULT_CITY.name}</span
+          ><span data-city-hint-reason> for you</span>. Nova also runs in the
+          other two cities.
+        </p>
+        <button
+          type="button"
+          data-city-hint-toggle
+          aria-expanded="false"
+          aria-controls="city-hint-options"
+          class="shrink-0 rounded-lg px-2 py-1 font-semibold text-[#ff8ec2] underline underline-offset-2 transition-colors hover:text-[#ffa9d1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+        >
+          See the others
+        </button>
+      </div>
+
+      <div
+        id="city-hint-options"
+        data-city-hint-options
+        hidden
+        class="mt-3 flex flex-wrap justify-center gap-2 border-t border-white/10 pt-3"
+      >
+        {
+          CITIES.map((city) => (
+            <button
+              type="button"
+              data-city-hint-select={city.slug}
+              class="rounded-xl bg-[#4f46e5] px-4 py-2 text-white transition-colors hover:bg-[#5b52ee] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+            >
+              <span class="font-semibold">{city.name}</span>
+              <span class="ml-2 text-xs text-white/70">{city.date}</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+{
+  /*
+  Names the city the bootstrap script settled on, and says where it came from,
+  during parse so the default city never flashes.
+*/
+}
+<script is:inline define:vars={{ cityNames: CITY_NAMES }}>
+  (function () {
+    var root = document.documentElement;
+    var reason = root.dataset.cityDefault;
+    // Absent means the visitor picked their city, so this banner is hidden.
+    if (!reason) return;
+
+    var name = cityNames[root.dataset.city];
+    var nameEl = document.querySelector("[data-city-hint-name]");
+    if (name && nameEl) nameEl.textContent = name;
+
+    var reasonEl = document.querySelector("[data-city-hint-reason]");
+    if (reasonEl) {
+      reasonEl.textContent =
+        reason === "detected" ? " based on where you seem to be" : " for you";
+    }
+  })();
+</script>
+
+<script>
+  import { cityBySlug } from "../data/cities";
+  import { selectCity } from "../state";
+
+  const toggle = document.querySelector<HTMLButtonElement>(
+    "[data-city-hint-toggle]",
+  );
+  const options = document.querySelector<HTMLElement>(
+    "[data-city-hint-options]",
+  );
+
+  toggle?.addEventListener("click", () => {
+    if (!options) return;
+    const open = options.hidden;
+    options.hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+
+  // Picking here persists the choice, which also hides this banner.
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-city-hint-select]")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const picked = cityBySlug(btn.dataset.cityHintSelect ?? "");
+        if (picked) selectCity(picked);
+      });
+    });
+</script>

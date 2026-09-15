@@ -69,3 +69,20 @@ body {
   paint-order: stroke fill;
   filter: drop-shadow(2px 3px 0 rgba(17, 20, 58, 0.9));
 }
+
+/*
+ * City hint banner. Visitors who haven't picked a city see the default one plus
+ * a banner offering the others; the inline bootstrap script in Layout.astro
+ * sets `data-city-default` on <html> before first paint, so the banner never
+ * flashes in or out.
+ *
+ * With JavaScript off the attribute is never set, so the banner stays hidden
+ * and the page is just the default city — which is also what crawlers see.
+ */
+[data-city-hint] {
+  display: none;
+}
+
+html[data-city-default] [data-city-hint] {
+  display: block;
+}
