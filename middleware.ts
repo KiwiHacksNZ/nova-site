@@ -1,8 +1,13 @@
 import { geolocation, next } from "@vercel/edge";
-import { CITY_COOKIE, cityFromGeo } from "./src/data/cities";
+// The .js extension is required, not optional. Vercel now runs this as
+// serverless middleware under Node ESM, which does not resolve extensionless
+// relative imports; dropping it fails every request with a 500
+// MIDDLEWARE_INVOCATION_FAILED. TypeScript maps the .js back to the .ts source
+// at build time, so this is correct in both places.
+import { CITY_COOKIE, cityFromGeo } from "./src/data/cities.js";
 
 /*
- * Vercel edge middleware. The site is a static build, so it cannot look at the
+ * Vercel middleware. The site is a static build, so it cannot look at the
  * request itself — this runs in front of the HTML and passes the visitor's
  * likely city down as a cookie, which the inline bootstrap script in
  * Layout.astro reads before first paint.
