@@ -1,8 +1,5 @@
 ---
-import { CITIES, DEFAULT_CITY } from "../data/cities";
-
-// slug -> display name, for the inline script that fills the banner in.
-const CITY_NAMES = Object.fromEntries(CITIES.map((c) => [c.slug, c.name]));
+import { CITIES } from "../data/cities";
 ---
 
 {
@@ -28,11 +25,8 @@ const CITY_NAMES = Object.fromEntries(CITIES.map((c) => [c.slug, c.name]));
         class="flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-center sm:gap-3 sm:text-left"
       >
         <p class="text-white/80">
-          Your closest Nova looks like <span
-            class="font-semibold text-white"
-            data-city-hint-name>{DEFAULT_CITY.name}</span
-          ><span data-city-hint-reason></span>. It also runs in the other two
-          cities.
+          Nova runs in three cities. Pick the one nearest you to see its venue,
+          schedule and guides.
         </p>
         <button
           type="button"
@@ -41,7 +35,7 @@ const CITY_NAMES = Object.fromEntries(CITIES.map((c) => [c.slug, c.name]));
           aria-controls="city-hint-options"
           class="shrink-0 rounded-lg px-2 py-1 font-semibold text-[#ff8ec2] underline underline-offset-2 transition-colors hover:text-[#ffa9d1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
         >
-          See the others
+          Choose a city
         </button>
       </div>
 
@@ -66,31 +60,6 @@ const CITY_NAMES = Object.fromEntries(CITIES.map((c) => [c.slug, c.name]));
     </div>
   </div>
 </div>
-
-{
-  /*
-  Names the city the bootstrap script settled on, and says where it came from,
-  during parse so the default city never flashes.
-*/
-}
-<script define:vars={{ cityNames: CITY_NAMES }}>
-  (function () {
-    var root = document.documentElement;
-    var reason = root.dataset.cityDefault;
-    // Absent means the visitor picked their city, so this banner is hidden.
-    if (!reason) return;
-
-    var name = cityNames[root.dataset.city];
-    var nameEl = document.querySelector("[data-city-hint-name]");
-    if (name && nameEl) nameEl.textContent = name;
-
-    var reasonEl = document.querySelector("[data-city-hint-reason]");
-    if (reasonEl) {
-      reasonEl.textContent =
-        reason === "detected" ? ", based on where you seem to be" : "";
-    }
-  })();
-</script>
 
 <script>
   const toggle = document.querySelector<HTMLButtonElement>(

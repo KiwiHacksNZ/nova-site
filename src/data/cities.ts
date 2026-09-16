@@ -204,9 +204,14 @@ export const CITIES: City[] = [
 // Read by the inline bootstrap script in Layout.astro before first paint.
 export const CITY_STORAGE_KEY = "selectedCity";
 
-// Cookie set by the Vercel edge middleware (middleware.ts) holding the slug it
-// guessed from the request IP. Only consulted when there is no stored choice.
+// Cookie set by the middleware (middleware.ts) holding the slug it guessed
+// from the request IP. Only consulted when there is no stored choice.
 export const CITY_COOKIE = "detectedCity";
+
+// Cookie holding a city the visitor actually chose, written when they land on
+// a city page. localStorage is invisible to the middleware, so without this an
+// explicit choice could not outrank the IP guess on the next visit.
+export const CITY_CHOICE_COOKIE = "chosenCity";
 
 // Shown to visitors who haven't picked a city, alongside a banner offering the
 // other two. A stored choice always wins over this.

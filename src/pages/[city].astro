@@ -36,13 +36,28 @@ const url = `${SITE_URL}/${city.slug}`;
 >
   <CityHome city={city} />
 
-  <script is:inline define:vars={{ slug: city.slug, key: "selectedCity" }}>
-    // Landing on a city page counts as picking it.
+  <script
+    is:inline
+    define:vars={{
+      slug: city.slug,
+      key: "selectedCity",
+      cookieName: "chosenCity",
+    }}
+  >
+    // Landing on a city page counts as picking it. Stored twice on purpose:
+    // localStorage for the page scripts, and a cookie so the middleware can
+    // honour the choice instead of redirecting "/" to the IP guess.
     try {
       localStorage.setItem(key, slug);
     } catch (e) {
       // Storage blocked; the page is correct regardless.
     }
+    document.cookie =
+      cookieName +
+      "=" +
+      slug +
+      "; Path=/; Max-Age=31536000; SameSite=Lax" +
+      (location.protocol === "https:" ? "; Secure" : "");
     document.documentElement.dataset.city = slug;
     delete document.documentElement.dataset.cityDefault;
   </script>

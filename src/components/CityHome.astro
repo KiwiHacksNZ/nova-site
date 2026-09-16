@@ -330,6 +330,21 @@ const faqItems = nationalOverview ? FAQ_ITEMS : faqItemsForCity(city);
     </a>
   </section>
 
+  {
+    !nationalOverview && (
+      <p class="mt-10 text-base text-white/70">
+        Not your city?{" "}
+        <a
+          href="/?all"
+          class="text-[#ff7ab3] underline-offset-4 hover:underline"
+        >
+          See all three Nova events
+        </a>
+        .
+      </p>
+    )
+  }
+
   <FaqSection items={faqItems} showMoreLink class="mt-24" />
 </div>
 
