@@ -237,67 +237,6 @@ const faqItems = nationalOverview ? FAQ_ITEMS : faqItemsForCity(city);
     </div>
   </section>
 
-  <section class="mt-24 w-full" aria-labelledby="quick-facts-heading">
-    <h2
-      id="quick-facts-heading"
-      class="text-center text-4xl font-semibold text-white sm:text-5xl"
-    >
-      Nova at a glance
-    </h2>
-    <dl class="mt-8 grid gap-5 text-left sm:grid-cols-2 lg:grid-cols-4">
-      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
-        <dt
-          class="text-sm font-semibold uppercase tracking-wide text-[#ff7ab3]"
-        >
-          Who
-        </dt>
-        <dd class="mt-2 text-base leading-relaxed text-white/85">
-          New Zealand high school students, aged 13 to 18
-        </dd>
-      </div>
-      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
-        <dt
-          class="text-sm font-semibold uppercase tracking-wide text-[#ff7ab3]"
-        >
-          Cost
-        </dt>
-        <dd class="mt-2 text-base leading-relaxed text-white/85">
-          Free, including food, workshops, mentors, and swag
-        </dd>
-      </div>
-      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
-        <dt
-          class="text-sm font-semibold uppercase tracking-wide text-[#ff7ab3]"
-        >
-          Experience
-        </dt>
-        <dd class="mt-2 text-base leading-relaxed text-white/85">
-          None required; complete beginners are welcome
-        </dd>
-      </div>
-      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
-        <dt
-          class="text-sm font-semibold uppercase tracking-wide text-[#ff7ab3]"
-        >
-          Format
-        </dt>
-        <dd class="mt-2 text-base leading-relaxed text-white/85">
-          One supervised 24-hour, in-person build weekend
-        </dd>
-      </div>
-    </dl>
-    {
-      !nationalOverview && (
-        <p class="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-white/85">
-          KiwiHacks Nova {city.name} runs on {city.date} at{" "}
-          {fullAddress(city.venue)}. Students can attend alone or with friends,
-          form a team, and build a game, app, website, hardware project, or
-          another original idea.
-        </p>
-      )
-    }
-  </section>
-
   {
     !nationalOverview && (
       <>
