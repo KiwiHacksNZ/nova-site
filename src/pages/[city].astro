@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CityHome from "../components/CityHome.astro";
+import { CITIES, type City } from "../data/cities";
+import { SITE_URL } from "../data/site";
+import { breadcrumbSchema, cityEventSchema } from "../data/structuredData";
+
+export function getStaticPaths() {
+  return CITIES.map((city) => ({
+    params: { city: city.slug },
+    props: { city },
+  }));
+}
+
+interface Props {
+  city: City;
+}
+
+const { city } = Astro.props;
+
+const title = `KiwiHacks Nova ${city.name} | Free 24-hour hackathon for high school students`;
+const description = `Join KiwiHacks Nova in ${city.name} on ${city.date} at ${city.venue.name}: a free, beginner-friendly 24-hour hackathon for New Zealand high school students aged 13 to 18.`;
+const url = `${SITE_URL}/${city.slug}`;
+---
+
+<Layout
+  title={title}
+  description={description}
+  jsonLd={[
+    cityEventSchema(city),
+    breadcrumbSchema([
+      { name: "KiwiHacks Nova", url: SITE_URL },
+      { name: city.name, url },
+    ]),
+  ]}
+>
+  <CityHome city={city} />
+</Layout>

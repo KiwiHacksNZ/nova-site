@@ -1,10 +1,10 @@
 ---
 import NovaLogo from "./NovaLogo.astro";
 import { CITIES } from "../data/cities";
-import { city } from "../state";
 
-// Current city from state
-const activeCity = city.get();
+const activeSlug = Astro.url.pathname.split("/")[1];
+const activeCity = CITIES.find((item) => item.slug === activeSlug);
+const cityLabel = activeCity?.name ?? "Select a city";
 ---
 
 <!-- The bar plus its bright pink gradient underline strip. -->
@@ -63,7 +63,7 @@ const activeCity = city.get();
           class="flex w-full items-center justify-center gap-3 rounded-xl bg-[#4f46e5] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
         >
           <span class="truncate whitespace-nowrap">
-            {activeCity.name}
+            {cityLabel}
           </span>
           <svg
             viewBox="0 0 24 24"
@@ -88,14 +88,14 @@ const activeCity = city.get();
         >
           {
             CITIES.map((city) => (
-              <button
-                type="button"
+              <a
+                href={`/${city.slug}`}
                 data-city-select={city.slug}
                 class="flex w-full items-baseline justify-between gap-4 px-4 py-1.5 text-left transition-colors hover:bg-white/10"
               >
                 <span class="text-lg text-white">{city.name}</span>
-                <span class="text-xs text-white/70">{city.date}</span>
-              </button>
+                <span class="text-xs text-white/70">{city.shortDate}</span>
+              </a>
             ))
           }
         </div>
@@ -111,9 +111,6 @@ const activeCity = city.get();
 </header>
 
 <script>
-  import { CITIES, cityBySlug } from "../data/cities";
-  import { city } from "../state";
-
   const mobileMenuToggle = document.querySelector<HTMLButtonElement>(
     "[data-mobile-menu-toggle]",
   );
@@ -145,34 +142,10 @@ const activeCity = city.get();
     if (chevron) chevron.classList.toggle("rotate-180", open);
   }
 
-  // Update button label when state changes
-  const unsubscribe = city.subscribe((newCity) => {
-    if (!toggle) return;
-    const span = toggle.querySelector("span");
-    if (span) span.textContent = newCity.name;
-  });
-
   toggle?.addEventListener("click", (e) => {
     e.stopPropagation();
     setOpen(panel?.hidden ?? false);
   });
-
-  // Handle city selection: set state
-  document
-    .querySelectorAll<HTMLButtonElement>("[data-city-select]")
-    .forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const citySlug = btn.dataset.citySelect;
-        if (citySlug) {
-          const selectedCity = cityBySlug(citySlug);
-          if (selectedCity) {
-            city.set(selectedCity);
-            setOpen(false);
-          }
-        }
-      });
-    });
 
   document.addEventListener("mousedown", (e) => {
     if (root && !root.contains(e.target as Node)) setOpen(false);

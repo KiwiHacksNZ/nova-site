@@ -11,6 +11,8 @@ import kyleImg from "../assets/images/team/kyle.jpg";
 import christieImg from "../assets/images/team/christie.jpg";
 import maggieImg from "../assets/images/team/maggie.jpg";
 import kieraImg from "../assets/images/team/kiera.jpg";
+import { SITE_URL } from "../data/site";
+import { breadcrumbSchema } from "../data/structuredData";
 
 type TeamLink = {
   label: string;
@@ -125,11 +127,46 @@ const members: TeamMember[] = [
     ],
   },
 ];
+
+const teamSchema = {
+  "@type": "AboutPage",
+  "@id": `${SITE_URL}/team#page`,
+  url: `${SITE_URL}/team`,
+  name: "KiwiHacks Nova team",
+  description:
+    "Meet the student organisers behind KiwiHacks Nova's 2026 high school hackathons.",
+  about: {
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
+  },
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: members.map((member, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Person",
+        name: member.name,
+        description: member.bio,
+        sameAs: member.links
+          .filter((link) => link.href.startsWith("http"))
+          .map((link) => link.href),
+      },
+    })),
+  },
+};
 ---
 
 <Layout
-  title="KiwiHacks Nova | Team"
-  description="Meet the KiwiHacks Nova team."
+  title="Meet the student organisers | KiwiHacks Nova team"
+  description="Meet the student organisers building KiwiHacks Nova's free 2026 high school hackathons in Wellington, Christchurch, and Auckland."
+  jsonLd={[
+    teamSchema,
+    breadcrumbSchema([
+      { name: "KiwiHacks Nova", url: SITE_URL },
+      { name: "Team", url: `${SITE_URL}/team` },
+    ]),
+  ]}
 >
   <div class="mx-auto max-w-6xl px-5 pt-6 pb-24">
     <BackButton />

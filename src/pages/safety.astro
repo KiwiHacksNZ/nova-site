@@ -1,0 +1,153 @@
+---
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+import NovaLogo from "../components/NovaLogo.astro";
+import BackButton from "../components/BackButton.astro";
+import {
+  SITE_URL,
+  CONTACT_EMAIL,
+  KIWIHACKS_PHONE,
+  KIWIHACKS_PHONE_TEL,
+  ORGANISER_PHONE,
+  ORGANISER_PHONE_TEL,
+  ORGANISER_NAME,
+} from "../data/site";
+import { breadcrumbSchema } from "../data/structuredData";
+import { POLICY_SECTIONS, POLICY_LAST_REVIEWED } from "../data/safeguarding";
+
+const url = `${SITE_URL}/safety`;
+---
+
+<Layout
+  title="KiwiHacks Nova | Health and safety"
+  description="How KiwiHacks keeps students safe at Nova: 24/7 supervision, closed-door venues, sign in and sign out, police-vetted mentors, first aid, and how to report a concern."
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "KiwiHacks Nova", url: SITE_URL },
+      { name: "Health and safety", url },
+    ]),
+  ]}
+>
+  <div class="mx-auto max-w-4xl px-5 pt-6 pb-24">
+    <BackButton />
+
+    <div
+      class="mt-8 flex flex-wrap items-center justify-center gap-6 sm:justify-start"
+    >
+      <NovaLogo class="h-20 sm:h-28" />
+      <h1 class="text-4xl font-semibold text-white sm:text-6xl">
+        Health and safety
+      </h1>
+    </div>
+
+    <p class="mt-8 text-lg leading-relaxed text-white/85">
+      KiwiHacks Nova is a 24-hour, overnight, closed-door event for high school
+      students. This page is our Safeguarding Policy in full, so that attendees,
+      parents and volunteers can read exactly how we keep people safe rather
+      than having to take our word for it.
+    </p>
+
+    {/* Report a concern: kept at the top on purpose. */}
+    <div class="mt-8 rounded-2xl bg-[#5c2a42]/85 p-6 ring-1 ring-[#ff7ab3]/30">
+      <h2 class="text-2xl font-semibold text-[#ff7ab3]">
+        Need to report something?
+      </h2>
+      <p class="mt-3 text-base leading-relaxed text-white/90">
+        In an emergency, call <strong class="text-white">111</strong> first. For anything
+        else, at any hour, before or during an event:
+      </p>
+      <ul class="mt-4 space-y-2 text-base text-white/90">
+        <li>
+          Call or text <a
+            href={`tel:${ORGANISER_PHONE_TEL}`}
+            class="font-semibold text-[#ff7ab3] underline-offset-4 hover:underline"
+            >{ORGANISER_PHONE}</a
+          > ({ORGANISER_NAME}, lead organiser)
+        </li>
+        <li>
+          Call the KiwiHacks line on <a
+            href={`tel:${KIWIHACKS_PHONE_TEL}`}
+            class="font-semibold text-[#ff7ab3] underline-offset-4 hover:underline"
+            >{KIWIHACKS_PHONE}</a
+          >
+        </li>
+        <li>
+          Email <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            class="font-semibold text-[#ff7ab3] underline-offset-4 hover:underline"
+            >{CONTACT_EMAIL}</a
+          >
+        </li>
+        <li>Speak to any organiser or the Safeguarding Officer on site</li>
+      </ul>
+      <p class="mt-4 text-sm leading-relaxed text-white/70">
+        You will never face action for making a report, and you do not need to
+        be certain before you speak up.
+      </p>
+    </div>
+
+    {/* Contents */}
+    <nav class="mt-10" aria-label="Policy contents">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-white/60">
+        On this page
+      </h2>
+      <ul class="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+        {
+          POLICY_SECTIONS.map((section) => (
+            <li>
+              <a
+                href={`#${section.id}`}
+                class="text-sm text-[#ff7ab3] underline-offset-4 hover:underline"
+              >
+                {section.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="mt-12 space-y-12">
+      {
+        POLICY_SECTIONS.map((section) => (
+          <section id={section.id} class="scroll-mt-24">
+            <h2 class="text-2xl font-semibold text-white sm:text-3xl">
+              {section.title}
+            </h2>
+            {section.intro && (
+              <p class="mt-3 text-base leading-relaxed text-white/85">
+                {section.intro}
+              </p>
+            )}
+            <ul class="mt-4 space-y-3">
+              {section.points.map((point) => (
+                <li class="flex gap-3 text-base leading-relaxed text-white/80">
+                  <span
+                    class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff7ab3]"
+                    aria-hidden="true"
+                  />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+
+    <div class="mt-16 border-t border-white/10 pt-8">
+      <p class="text-sm text-white/60">
+        Last reviewed {POLICY_LAST_REVIEWED}. This policy is reviewed annually.
+      </p>
+      <p class="mt-3 text-sm text-white/60">
+        Read this alongside the <a
+          href="https://www.kiwihacks.org/code-of-conduct"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-[#ff7ab3] underline-offset-4 hover:underline"
+          >KiwiHacks Code of Conduct</a
+        >, and the parent's guide on your city page.
+      </p>
+    </div>
+  </div>
+</Layout>

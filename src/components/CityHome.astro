@@ -1,6 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import { SIGNUP_URL, type City } from "../data/cities";
+import { CITIES, SIGNUP_URL, fullAddress, type City } from "../data/cities";
+import { FAQ_ITEMS, faqItemsForCity } from "../data/faq";
+import VenueSection from "./VenueSection.astro";
+import GuidesSection from "./GuidesSection.astro";
+import FaqSection from "./FaqSection.astro";
 import heroLogo from "../assets/images/Kiwihacks_-_Nova_Logo_2.png";
 import img1 from "../assets/images/DSCF3841.jpg";
 import img2 from "../assets/images/DSCF4012.jpg";
@@ -9,9 +13,18 @@ import img4 from "../assets/images/DSCF3768.jpg";
 import img5 from "../assets/images/DSCF3771.jpg";
 import img6 from "../assets/images/DSCF7194.jpg";
 
-const { city } = Astro.props;
+interface Props {
+  city: City;
+  nationalOverview?: boolean;
+}
+
+const { city, nationalOverview = false } = Astro.props;
 
 const galleryImages = [img1, img2, img3, img4, img5, img6];
+
+// The national overview gets the shared questions; a city page also gets the
+// three that only make sense once you know the venue.
+const faqItems = nationalOverview ? FAQ_ITEMS : faqItemsForCity(city);
 ---
 
 <div
@@ -27,9 +40,13 @@ const galleryImages = [img1, img2, img3, img4, img5, img6];
     class="h-80 w-auto select-none sm:h-[28rem]"
   />
 
-  <p class="mt-8 max-w-2xl text-xl text-white sm:text-2xl">
-    {city.name}&apos;s free 24-hour hackathon for high school students
-  </p>
+  <h1 class="mt-8 max-w-3xl text-3xl font-semibold text-white sm:text-5xl">
+    {
+      nationalOverview
+        ? "New Zealand's free 24-hour hackathons for high school students"
+        : `${city.name}'s free 24-hour hackathon for high school students`
+    }
+  </h1>
 
   <div
     class="mt-7 w-full rounded-[2rem] bg-[#aa4176] px-6 py-7 text-center shadow-lg"
@@ -37,12 +54,21 @@ const galleryImages = [img1, img2, img3, img4, img5, img6];
     <p
       class="text-lg font-semibold uppercase tracking-wide text-white sm:text-2xl"
     >
-      {city.name}
-      {"  ·  "}
-      {city.date}
-      {"  ·  "}Location TBC
+      {
+        nationalOverview
+          ? "Wellington · Christchurch · Auckland · September to October 2026"
+          : `${city.name}  ·  ${city.date}`
+      }
     </p>
   </div>
+
+  {
+    !nationalOverview && (
+      <p class="mt-4 text-base text-white/80 sm:text-lg">
+        {fullAddress(city.venue)}
+      </p>
+    )
+  }
 
   <div class="mt-9">
     <a
@@ -90,7 +116,7 @@ const galleryImages = [img1, img2, img3, img4, img5, img6];
     </div>
 
     <div class="group relative mt-12" data-carousel>
-      {/* Track — scrollbar hidden across all browsers */}
+      {/* Track: scrollbar hidden across all browsers */}
       <div
         data-carousel-track
         class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth rounded-2xl shadow-2xl ring-1 ring-white/10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
@@ -121,7 +147,7 @@ const galleryImages = [img1, img2, img3, img4, img5, img6];
         1 / {galleryImages.length}
       </div>
 
-      {/* Prev arrow — always visible on mobile, fades in on desktop hover */}
+      {/* Prev arrow: always visible on mobile, fades in on desktop hover */}
       <button
         type="button"
         data-carousel-prev
@@ -155,7 +181,7 @@ const galleryImages = [img1, img2, img3, img4, img5, img6];
         </svg>
       </button>
 
-      {/* Dot indicators — active dot expands to a pill */}
+      {/* Dot indicators: active dot expands to a pill */}
       <div class="mt-4 flex items-center justify-center gap-1.5">
         {
           galleryImages.map((_, index) => (
@@ -175,6 +201,135 @@ const galleryImages = [img1, img2, img3, img4, img5, img6];
       </div>
     </div>
   </section>
+
+  <section class="mt-24 w-full" aria-labelledby="nova-dates-heading">
+    <h2
+      id="nova-dates-heading"
+      class="text-center text-4xl font-semibold text-white sm:text-5xl"
+    >
+      Nova 2026 dates and cities
+    </h2>
+    <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-white/80">
+      Choose your nearest event. Each Nova is a separate free 24-hour hackathon
+      with its own venue, schedule, and attendee guide.
+    </p>
+    <div class="mt-8 grid gap-5 sm:grid-cols-3">
+      {
+        CITIES.map((eventCity) => (
+          <a
+            href={`/${eventCity.slug}`}
+            aria-current={
+              !nationalOverview && eventCity.slug === city.slug
+                ? "page"
+                : undefined
+            }
+            class="rounded-2xl bg-[#5c2a42]/85 p-6 text-left no-underline ring-1 ring-white/10 transition-transform hover:-translate-y-1"
+          >
+            <h3 class="text-2xl font-semibold text-[#ff7ab3]">
+              {eventCity.name}
+            </h3>
+            <p class="mt-2 text-base text-white">{eventCity.date}</p>
+            <p class="mt-2 text-sm text-white/70">{eventCity.venue.name}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mt-24 w-full" aria-labelledby="quick-facts-heading">
+    <h2
+      id="quick-facts-heading"
+      class="text-center text-4xl font-semibold text-white sm:text-5xl"
+    >
+      Nova at a glance
+    </h2>
+    <dl class="mt-8 grid gap-5 text-left sm:grid-cols-2 lg:grid-cols-4">
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
+        <dt
+          class="text-sm font-semibold uppercase tracking-wide text-[#ff7ab3]"
+        >
+          Who
+        </dt>
+        <dd class="mt-2 text-base leading-relaxed text-white/85">
+          New Zealand high school students, aged 13 to 18
+        </dd>
+      </div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
+        <dt
+          class="text-sm font-semibold uppercase tracking-wide text-[#ff7ab3]"
+        >
+          Cost
+        </dt>
+        <dd class="mt-2 text-base leading-relaxed text-white/85">
+          Free, including food, workshops, mentors, and swag
+        </dd>
+      </div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
+        <dt
+          class="text-sm font-semibold uppercase tracking-wide text-[#ff7ab3]"
+        >
+          Experience
+        </dt>
+        <dd class="mt-2 text-base leading-relaxed text-white/85">
+          None required; complete beginners are welcome
+        </dd>
+      </div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
+        <dt
+          class="text-sm font-semibold uppercase tracking-wide text-[#ff7ab3]"
+        >
+          Format
+        </dt>
+        <dd class="mt-2 text-base leading-relaxed text-white/85">
+          One supervised 24-hour, in-person build weekend
+        </dd>
+      </div>
+    </dl>
+    {
+      !nationalOverview && (
+        <p class="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-white/85">
+          KiwiHacks Nova {city.name} runs on {city.date} at{" "}
+          {fullAddress(city.venue)}. Students can attend alone or with friends,
+          form a team, and build a game, app, website, hardware project, or
+          another original idea.
+        </p>
+      )
+    }
+  </section>
+
+  {
+    !nationalOverview && (
+      <>
+        <VenueSection city={city} class="mt-24" />
+        <div class="mt-24 w-full">
+          <GuidesSection city={city} />
+        </div>
+      </>
+    )
+  }
+
+  <section class="mt-24 w-full" aria-labelledby="safety-heading">
+    <h2
+      id="safety-heading"
+      class="text-center text-4xl font-semibold text-white sm:text-5xl"
+    >
+      Safety
+    </h2>
+    <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-white/80">
+      Nova is overnight and closed-door, so this matters. Venues are supervised
+      around the clock at one staff member to every fifteen attendees, everyone
+      signs in and out, mentors and organisers are police-vetted, and there is
+      first aid on site.
+    </p>
+    <a
+      href="/safety"
+      class="mt-6 inline-block rounded-2xl bg-[#4f46e5] px-8 py-3 text-base font-semibold text-white no-underline transition-colors hover:bg-[#5b52ee]"
+    >
+      Read our safeguarding policy
+    </a>
+  </section>
+
+  <FaqSection items={faqItems} showMoreLink class="mt-24" />
 </div>
 
 <script>
