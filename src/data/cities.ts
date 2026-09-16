@@ -200,7 +200,16 @@ export const CITIES: City[] = [
   },
 ];
 
-// The home page ("/") defaults to this city.
+// localStorage key holding the slug of the city the visitor explicitly picked.
+// Read by the inline bootstrap script in Layout.astro before first paint.
+export const CITY_STORAGE_KEY = "selectedCity";
+
+// Cookie set by the Vercel edge middleware (middleware.ts) holding the slug it
+// guessed from the request IP. Only consulted when there is no stored choice.
+export const CITY_COOKIE = "detectedCity";
+
+// Shown to visitors who haven't picked a city, alongside a banner offering the
+// other two. A stored choice always wins over this.
 export const DEFAULT_CITY_SLUG = "auckland";
 
 export function cityBySlug(slug: string): City | undefined {
@@ -212,4 +221,47 @@ export const DEFAULT_CITY = cityBySlug(DEFAULT_CITY_SLUG)!;
 /** "NEC House, Level 4, 40 Taranaki Street, Te Aro, Wellington 6011" */
 export function fullAddress(venue: Venue): string {
   return `${venue.name}, ${venue.address}, ${venue.locality} ${venue.postalCode}`;
+}
+
+// ISO 3166-2 subdivision codes (minus the "NZ-" prefix, which is how Vercel
+// reports them) for the regions each city serves. Matching on region rather
+// than city name means the suburbs count too: someone in Manukau or Lower Hutt
+// gets Auckland or Wellington rather than falling through to the default.
+const REGION_TO_SLUG: Record<string, string> = {
+  AUK: "auckland",
+  WGN: "wellington",
+  CAN: "christchurch",
+};
+
+// Fallback for when the region is missing but the city name isn't.
+const CITY_NAME_TO_SLUG: Record<string, string> = {
+  auckland: "auckland",
+  wellington: "wellington",
+  "lower hutt": "wellington",
+  "upper hutt": "wellington",
+  porirua: "wellington",
+  christchurch: "christchurch",
+};
+
+/**
+ * Best guess at a Nova city from a request's geo headers, or undefined if the
+ * visitor isn't near one. Anyone outside New Zealand falls through to
+ * undefined, and so gets the default city: region codes are only unique within
+ * a country, so they are meaningless without the country check.
+ */
+export function cityFromGeo(geo: {
+  country?: string;
+  city?: string;
+  countryRegion?: string;
+}): City | undefined {
+  if (geo.country?.toUpperCase() !== "NZ") return undefined;
+
+  const byRegion =
+    geo.countryRegion && REGION_TO_SLUG[geo.countryRegion.toUpperCase()];
+  if (byRegion) return cityBySlug(byRegion);
+
+  const byName = geo.city && CITY_NAME_TO_SLUG[geo.city.trim().toLowerCase()];
+  if (byName) return cityBySlug(byName);
+
+  return undefined;
 }

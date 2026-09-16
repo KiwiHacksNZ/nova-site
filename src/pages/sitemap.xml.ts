@@ -8,6 +8,7 @@ const paths = [
   "/faq",
   "/team",
   "/safety",
+  "/leaderboard",
 ];
 
 function escapeXml(value: string) {

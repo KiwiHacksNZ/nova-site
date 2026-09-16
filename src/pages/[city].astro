@@ -35,4 +35,15 @@ const url = `${SITE_URL}/${city.slug}`;
   ]}
 >
   <CityHome city={city} />
+
+  <script is:inline define:vars={{ slug: city.slug, key: "selectedCity" }}>
+    // Landing on a city page counts as picking it.
+    try {
+      localStorage.setItem(key, slug);
+    } catch (e) {
+      // Storage blocked; the page is correct regardless.
+    }
+    document.documentElement.dataset.city = slug;
+    delete document.documentElement.dataset.cityDefault;
+  </script>
 </Layout>

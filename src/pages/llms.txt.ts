@@ -38,6 +38,7 @@ ${guideLinks}
 - [Nova overview](${SITE_URL}/): Event overview, audience, format, and dates.
 - [Frequently asked questions](${SITE_URL}/faq): Eligibility, cost, safety, parent information, what to bring, and what students can build.
 - [Health and safety](${SITE_URL}/safety): The full KiwiHacks safeguarding policy, supervision ratios, and how to report a concern.
+- [Beacons referral leaderboard](${SITE_URL}/leaderboard): Who has referred the most people to Nova, and how the referral codes work.
 - [Organising team](${SITE_URL}/team): The student organisers behind KiwiHacks Nova.
 - [KiwiHacks code of conduct](https://www.kiwihacks.org/code-of-conduct)
 - [Past KiwiHacks projects](https://www.kiwihacks.org/showcase)

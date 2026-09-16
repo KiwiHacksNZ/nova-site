@@ -3,6 +3,12 @@ import "../styles/global.css";
 import NavBar from "../components/NavBar.astro";
 import Footer from "../components/Footer.astro";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL } from "../data/site";
+import {
+  CITIES,
+  CITY_COOKIE,
+  CITY_STORAGE_KEY,
+  DEFAULT_CITY_SLUG,
+} from "../data/cities";
 
 type JsonLd = Record<string, unknown>;
 
@@ -31,6 +37,8 @@ const safeJsonLd = JSON.stringify({
   "@context": "https://schema.org",
   "@graph": schemas,
 }).replace(/</g, "\\u003c");
+
+const CITY_SLUGS = CITIES.map((c) => c.slug);
 ---
 
 <!doctype html>
@@ -70,6 +78,54 @@ const safeJsonLd = JSON.stringify({
         <script type="application/ld+json" set:html={safeJsonLd} />
       )
     }
+    {
+      /*
+      Runs before first paint and resolves which city this visitor is closest
+      to: a choice they made before, then the edge middleware's guess from
+      their IP, then the default. The answer goes on <html> as `data-city`,
+      and `data-city-default` records which of the last two it was, which is
+      what the hint banner on the home page keys off.
+
+      City pages render their own city server side, so this only ever drives
+      the banner, never the page copy.
+    */
+    }
+    <script
+      is:inline
+      define:vars={{
+        storageKey: CITY_STORAGE_KEY,
+        cookieName: CITY_COOKIE,
+        slugs: CITY_SLUGS,
+        defaultSlug: DEFAULT_CITY_SLUG,
+      }}
+    >
+      (function () {
+        var root = document.documentElement;
+
+        var chosen = null;
+        try {
+          chosen = localStorage.getItem(storageKey);
+        } catch (e) {
+          // Storage blocked, treat as "no choice yet".
+        }
+        if (chosen && slugs.indexOf(chosen) !== -1) {
+          root.dataset.city = chosen;
+          return;
+        }
+
+        var match = document.cookie.match(
+          "(?:^|; *)" + cookieName + "=([^;]*)",
+        );
+        var detected = match ? decodeURIComponent(match[1]) : null;
+        if (detected && slugs.indexOf(detected) !== -1) {
+          root.dataset.city = detected;
+          root.dataset.cityDefault = "detected";
+        } else {
+          root.dataset.city = defaultSlug;
+          root.dataset.cityDefault = "fallback";
+        }
+      })();
+    </script>
   </head>
   <body class="flex min-h-full flex-col">
     <NavBar />
