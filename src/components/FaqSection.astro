@@ -1,0 +1,72 @@
+---
+import type { Faq } from "../data/faq";
+
+interface Props {
+  items: Faq[];
+  heading?: string;
+  /** Adds a link through to the full /faq page. Off on the FAQ page itself. */
+  showMoreLink?: boolean;
+  /** Off on /faq, where the page h1 already says it. */
+  showHeading?: boolean;
+  class?: string;
+}
+
+const {
+  items,
+  heading = "Frequently asked questions",
+  showMoreLink = false,
+  showHeading = true,
+  class: className = "",
+} = Astro.props;
+---
+
+<section
+  class={`w-full ${className}`}
+  aria-labelledby={showHeading ? "faq-heading" : undefined}
+  aria-label={showHeading ? undefined : heading}
+  id="faq"
+>
+  {
+    showHeading && (
+      <h2
+        id="faq-heading"
+        class="text-center text-4xl font-semibold text-white sm:text-5xl"
+      >
+        {heading}
+      </h2>
+    )
+  }
+
+  <div class="mt-8 grid grid-cols-1 gap-6 text-left sm:grid-cols-2">
+    {
+      items.map((item) => (
+        <div class="rounded-xl bg-[#5c2a42]/85 p-6 ring-1 ring-white/5">
+          <h3 class="text-lg font-semibold text-[#db74a8]">{item.q}</h3>
+          <p class="mt-3 text-sm leading-relaxed text-white/80">{item.a}</p>
+        </div>
+      ))
+    }
+  </div>
+
+  {
+    showMoreLink && (
+      <p class="mt-8 text-center text-base text-white/75">
+        Still stuck? Read the{" "}
+        <a
+          href="/faq"
+          class="text-[#ff7ab3] underline-offset-4 hover:underline"
+        >
+          full FAQ
+        </a>{" "}
+        or email{" "}
+        <a
+          href="mailto:niko@kiwihacks.org"
+          class="text-[#ff7ab3] underline-offset-4 hover:underline"
+        >
+          niko@kiwihacks.org
+        </a>
+        .
+      </p>
+    )
+  }
+</section>

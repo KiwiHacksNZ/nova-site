@@ -2,17 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import CityHome from "../components/CityHome.astro";
 import CityHint from "../components/CityHint.astro";
+import CityHint from "../components/CityHint.astro";
 import { DEFAULT_CITY } from "../data/cities";
+import { organisationSchema, websiteSchema } from "../data/structuredData";
 ---
 
-{
-  /*
-  Renders the default city. A stored choice is swapped in before first paint by
-  the inline scripts; visitors without one get the CityHint banner offering the
-  other cities.
-*/
-}
-<Layout>
+<Layout jsonLd={[organisationSchema, websiteSchema]}>
   <CityHint />
-  <CityHome city={DEFAULT_CITY} />
+  <CityHome city={DEFAULT_CITY} nationalOverview />
 </Layout>

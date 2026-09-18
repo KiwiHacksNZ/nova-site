@@ -3,45 +3,25 @@ import "../styles/global.css";
 import Layout from "../layouts/Layout.astro";
 import NovaLogo from "../components/NovaLogo.astro";
 import BackButton from "../components/BackButton.astro";
-type Faq = { q: string; a: string };
+import FaqSection from "../components/FaqSection.astro";
+import { SITE_URL } from "../data/site";
+import { breadcrumbSchema } from "../data/structuredData";
+import { FAQ_ITEMS, faqSchema } from "../data/faq";
 
-const FAQ_ITEMS: Faq[] = [
-  {
-    q: "Who can attend KiwiHacks Nova?",
-    a: "Any high school student in New Zealand, years 9 to 13. Come on your own or bring a team of friends. No experience is needed.",
-  },
-  {
-    q: "I'm not a good coder. Can I come?",
-    a: "Yes. Total beginners are welcome and a lot of KiwiHackers write their first line of code at the event. We run workshops and have mentors on hand all weekend. Designers, artists, and storytellers fit right in too.",
-  },
-  {
-    q: "What should I bring to the hackathon?",
-    a: "A laptop and charger, any devices you want to build with, a water bottle, and a sleeping bag if you want to rest. It runs for 24 hours, so pack like a sleepover. We cover the food, Wi-Fi, and the space.",
-  },
-  {
-    q: "All of this, for free?",
-    a: "Yes, completely free to attend. Food, mentors, workshops, and swag are all covered by our sponsors. Cost is never a barrier at KiwiHacks.",
-  },
-  {
-    q: "What can I make at KiwiHacks Nova?",
-    a: "Anything you can build in 24 hours: a game, a website, an app, a hardware project, or something completely unexpected. Every team leaves with a real project they built themselves.",
-  },
-  {
-    q: "What if my parents are concerned?",
-    a: "We are happy to talk. We run parent information sessions before each event, the venue is supervised the whole time, and a signed waiver is required to take part. Email us and we will answer any questions.",
-  },
-  {
-    q: "How about safety?",
-    a: "The event is supervised by the KiwiHacks team around the clock. There will be a secure venue with check-in and check-out, first aid on site, a clear code of conduct, and guardian contact details collected at sign-up.",
-  },
-  {
-    q: "What if I have more questions?",
-    a: "Email niko@kiwihacks.org or join the KiwiHackers Discord at kiwihacks.org/discord. We reply fast.",
-  },
-];
+const url = `${SITE_URL}/faq`;
 ---
 
-<Layout title="FAQ | KiwiHacks Nova">
+<Layout
+  title="KiwiHacks Nova FAQ | Cost, eligibility, safety, and what to bring"
+  description="Answers about KiwiHacks Nova: who can attend, cost, beginner support, safety, what to bring, what students can build, and how to contact us."
+  jsonLd={[
+    faqSchema(FAQ_ITEMS, url),
+    breadcrumbSchema([
+      { name: "KiwiHacks Nova", url: SITE_URL },
+      { name: "FAQ", url: `${SITE_URL}/faq` },
+    ]),
+  ]}
+>
   <div class="mx-auto max-w-5xl px-5 pt-6 pb-24">
     <BackButton />
 
@@ -55,16 +35,11 @@ const FAQ_ITEMS: Faq[] = [
       <h1 class="text-5xl font-semibold text-white sm:text-7xl">FAQ</h1>
     </div>
 
-    {/* 2-column card grid (stacks on mobile) */}
-    <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
-      {
-        FAQ_ITEMS.map((item) => (
-          <div class="rounded-xl bg-[#5c2a42]/85 p-6 ring-1 ring-white/5">
-            <h3 class="text-lg font-semibold text-[#db74a8]">{item.q}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-white/80">{item.a}</p>
-          </div>
-        ))
-      }
-    </div>
+    <FaqSection items={FAQ_ITEMS} showHeading={false} class="mt-12" />
+
+    <p class="mt-10 text-center text-base text-white/75">
+      Looking for venue, schedule, or drop-off times? Those live on your city
+      page, along with the attendee and parent guides.
+    </p>
   </div>
 </Layout>

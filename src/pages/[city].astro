@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CityHome from "../components/CityHome.astro";
+import { CITIES, type City } from "../data/cities";
+import { SITE_URL } from "../data/site";
+import { breadcrumbSchema, cityEventSchema } from "../data/structuredData";
+
+export function getStaticPaths() {
+  return CITIES.map((city) => ({
+    params: { city: city.slug },
+    props: { city },
+  }));
+}
+
+interface Props {
+  city: City;
+}
+
+const { city } = Astro.props;
+
+const title = `KiwiHacks Nova ${city.name} | Free 24-hour hackathon for high school students`;
+const description = `Join KiwiHacks Nova in ${city.name} on ${city.date} at ${city.venue.name}: a free, beginner-friendly 24-hour hackathon for New Zealand high school students aged 13 to 18.`;
+const url = `${SITE_URL}/${city.slug}`;
+---
+
+<Layout
+  title={title}
+  description={description}
+  jsonLd={[
+    cityEventSchema(city),
+    breadcrumbSchema([
+      { name: "KiwiHacks Nova", url: SITE_URL },
+      { name: city.name, url },
+    ]),
+  ]}
+>
+  <CityHome city={city} />
+
+  <script
+    is:inline
+    define:vars={{
+      slug: city.slug,
+      key: "selectedCity",
+      cookieName: "chosenCity",
+    }}
+  >
+    // Landing on a city page counts as picking it. Stored twice on purpose:
+    // localStorage for the page scripts, and a cookie so the middleware can
+    // honour the choice instead of redirecting "/" to the IP guess.
+    try {
+      localStorage.setItem(key, slug);
+    } catch (e) {
+      // Storage blocked; the page is correct regardless.
+    }
+    document.cookie =
+      cookieName +
+      "=" +
+      slug +
+      "; Path=/; Max-Age=31536000; SameSite=Lax" +
+      (location.protocol === "https:" ? "; Secure" : "");
+    document.documentElement.dataset.city = slug;
+    delete document.documentElement.dataset.cityDefault;
+  </script>
+</Layout>

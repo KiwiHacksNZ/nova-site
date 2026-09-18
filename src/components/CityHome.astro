@@ -1,6 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import { CITIES, SIGNUP_URL, cityBannerText } from "../data/cities";
+import { CITIES, SIGNUP_URL, fullAddress, type City } from "../data/cities";
+import { FAQ_ITEMS, faqItemsForCity } from "../data/faq";
+import VenueSection from "./VenueSection.astro";
+import GuidesSection from "./GuidesSection.astro";
+import FaqSection from "./FaqSection.astro";
 import heroLogo from "../assets/images/Kiwihacks_-_Nova_Logo_2.png";
 import img1 from "../assets/images/DSCF3841.jpg";
 import img2 from "../assets/images/DSCF4012.jpg";
@@ -9,16 +13,18 @@ import img4 from "../assets/images/DSCF3768.jpg";
 import img5 from "../assets/images/DSCF3771.jpg";
 import img6 from "../assets/images/DSCF7194.jpg";
 
-// Rendered with the default city at build time. If the visitor has a different
-// city stored, the inline script below swaps the copy in before first paint.
-const { city } = Astro.props;
+interface Props {
+  city: City;
+  nationalOverview?: boolean;
+}
+
+const { city, nationalOverview = false } = Astro.props;
 
 const galleryImages = [img1, img2, img3, img4, img5, img6];
 
-// slug -> the two strings that vary by city.
-const CITY_COPY = Object.fromEntries(
-  CITIES.map((c) => [c.slug, { name: c.name, banner: cityBannerText(c) }]),
-);
+// The national overview gets the shared questions; a city page also gets the
+// three that only make sense once you know the venue.
+const faqItems = nationalOverview ? FAQ_ITEMS : faqItemsForCity(city);
 ---
 
 <div
@@ -34,10 +40,13 @@ const CITY_COPY = Object.fromEntries(
     class="h-80 w-auto select-none sm:h-[28rem]"
   />
 
-  <p class="mt-8 max-w-2xl text-xl text-white sm:text-2xl">
-    <span data-city-name>{city.name}</span>&apos;s free 24-hour hackathon for
-    high school students
-  </p>
+  <h1 class="mt-8 max-w-3xl text-3xl font-semibold text-white sm:text-5xl">
+    {
+      nationalOverview
+        ? "New Zealand's free 24-hour hackathons for high school students"
+        : `${city.name}'s free 24-hour hackathon for high school students`
+    }
+  </h1>
 
   <div
     class="mt-7 w-full rounded-[2rem] bg-[#aa4176] px-6 py-7 text-center shadow-lg"
@@ -46,9 +55,21 @@ const CITY_COPY = Object.fromEntries(
       class="text-lg font-semibold uppercase tracking-wide text-white sm:text-2xl"
       data-city-banner
     >
-      {cityBannerText(city)}
+      {
+        nationalOverview
+          ? "Wellington · Christchurch · Auckland · September to October 2026"
+          : `${city.name}  ·  ${city.date}`
+      }
     </p>
   </div>
+
+  {
+    !nationalOverview && (
+      <p class="mt-4 text-base text-white/80 sm:text-lg">
+        {fullAddress(city.venue)}
+      </p>
+    )
+  }
 
   <div class="mt-9">
     <a
@@ -96,7 +117,7 @@ const CITY_COPY = Object.fromEntries(
     </div>
 
     <div class="group relative mt-12" data-carousel>
-      {/* Track — scrollbar hidden across all browsers */}
+      {/* Track: scrollbar hidden across all browsers */}
       <div
         data-carousel-track
         class="flex snap-x snap-mandatory overflow-x-auto scroll-smooth rounded-2xl shadow-2xl ring-1 ring-white/10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
@@ -127,7 +148,7 @@ const CITY_COPY = Object.fromEntries(
         1 / {galleryImages.length}
       </div>
 
-      {/* Prev arrow — always visible on mobile, fades in on desktop hover */}
+      {/* Prev arrow: always visible on mobile, fades in on desktop hover */}
       <button
         type="button"
         data-carousel-prev
@@ -161,7 +182,7 @@ const CITY_COPY = Object.fromEntries(
         </svg>
       </button>
 
-      {/* Dot indicators — active dot expands to a pill */}
+      {/* Dot indicators: active dot expands to a pill */}
       <div class="mt-4 flex items-center justify-center gap-1.5">
         {
           galleryImages.map((_, index) => (
@@ -181,39 +202,90 @@ const CITY_COPY = Object.fromEntries(
       </div>
     </div>
   </section>
+
+  <section class="mt-24 w-full" aria-labelledby="nova-dates-heading">
+    <h2
+      id="nova-dates-heading"
+      class="text-center text-4xl font-semibold text-white sm:text-5xl"
+    >
+      Nova 2026 dates and cities
+    </h2>
+    <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-white/80">
+      Choose your nearest event. Each Nova is a separate free 24-hour hackathon
+      with its own venue, schedule, and attendee guide.
+    </p>
+    <div class="mt-8 grid gap-5 sm:grid-cols-3">
+      {
+        CITIES.map((eventCity) => (
+          <a
+            href={`/${eventCity.slug}`}
+            aria-current={
+              !nationalOverview && eventCity.slug === city.slug
+                ? "page"
+                : undefined
+            }
+            class="rounded-2xl bg-[#5c2a42]/85 p-6 text-left no-underline ring-1 ring-white/10 transition-transform hover:-translate-y-1"
+          >
+            <h3 class="text-2xl font-semibold text-[#ff7ab3]">
+              {eventCity.name}
+            </h3>
+            <p class="mt-2 text-base text-white">{eventCity.date}</p>
+            <p class="mt-2 text-sm text-white/70">{eventCity.venue.name}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    !nationalOverview && (
+      <>
+        <VenueSection city={city} class="mt-24" />
+        <div class="mt-24 w-full">
+          <GuidesSection city={city} />
+        </div>
+      </>
+    )
+  }
+
+  <section class="mt-24 w-full" aria-labelledby="safety-heading">
+    <h2
+      id="safety-heading"
+      class="text-center text-4xl font-semibold text-white sm:text-5xl"
+    >
+      Safety
+    </h2>
+    <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-white/80">
+      Nova is overnight and closed-door, so this matters. Venues are supervised
+      around the clock at one staff member to every fifteen attendees, everyone
+      signs in and out, mentors and organisers are police-vetted, and there is
+      first aid on site.
+    </p>
+    <a
+      href="/safety"
+      class="mt-6 inline-block rounded-2xl bg-[#4f46e5] px-8 py-3 text-base font-semibold text-white no-underline transition-colors hover:bg-[#5b52ee]"
+    >
+      Read our safeguarding policy
+    </a>
+  </section>
+
+  {
+    !nationalOverview && (
+      <p class="mt-10 text-base text-white/70">
+        Not your city?{" "}
+        <a
+          href="/?all"
+          class="text-[#ff7ab3] underline-offset-4 hover:underline"
+        >
+          See all three Nova events
+        </a>
+        .
+      </p>
+    )
+  }
+
+  <FaqSection items={faqItems} showMoreLink class="mt-24" />
 </div>
-
-{
-  /*
-  Swaps in the stored city during parse, before the browser paints, so a
-  visitor who picked a different city never sees the default one. Later changes
-  from the nav or the hint banner are handled by the module script.
-*/
-}
-<script is:inline define:vars={{ cityCopy: CITY_COPY }}>
-  (function () {
-    var copy = cityCopy[document.documentElement.dataset.city];
-    if (!copy) return;
-    var name = document.querySelector("[data-city-name]");
-    if (name) name.textContent = copy.name;
-    var banner = document.querySelector("[data-city-banner]");
-    if (banner) banner.textContent = copy.banner;
-  })();
-</script>
-
-<script>
-  import { cityBannerText } from "../data/cities";
-  import { city } from "../state";
-
-  // Keep the hero copy in sync when the city is changed from the nav or the
-  // hint banner.
-  city.subscribe((selected) => {
-    const name = document.querySelector("[data-city-name]");
-    if (name) name.textContent = selected.name;
-    const banner = document.querySelector("[data-city-banner]");
-    if (banner) banner.textContent = cityBannerText(selected);
-  });
-</script>
 
 <script>
   document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {

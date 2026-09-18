@@ -1,9 +1,10 @@
 ---
 import NovaLogo from "./NovaLogo.astro";
-import { CITIES, DEFAULT_CITY } from "../data/cities";
+import { CITIES } from "../data/cities";
 
-// slug -> display name, for the inline label script below.
-const CITY_NAMES = Object.fromEntries(CITIES.map((c) => [c.slug, c.name]));
+const activeSlug = Astro.url.pathname.split("/")[1];
+const activeCity = CITIES.find((item) => item.slug === activeSlug);
+const cityLabel = activeCity?.name ?? "Select a city";
 ---
 
 <!-- The bar plus its bright pink gradient underline strip. -->
@@ -68,8 +69,8 @@ const CITY_NAMES = Object.fromEntries(CITIES.map((c) => [c.slug, c.name]));
           aria-expanded="false"
           class="flex w-full items-center justify-center gap-3 rounded-xl bg-[#4f46e5] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5b52ee] sm:w-auto sm:px-5 sm:py-2"
         >
-          <span class="truncate whitespace-nowrap" data-city-label>
-            {DEFAULT_CITY.name}
+          <span class="truncate whitespace-nowrap">
+            {cityLabel}
           </span>
           <svg
             viewBox="0 0 24 24"
@@ -94,14 +95,14 @@ const CITY_NAMES = Object.fromEntries(CITIES.map((c) => [c.slug, c.name]));
         >
           {
             CITIES.map((city) => (
-              <button
-                type="button"
+              <a
+                href={`/${city.slug}`}
                 data-city-select={city.slug}
                 class="flex w-full items-baseline justify-between gap-4 px-4 py-1.5 text-left transition-colors hover:bg-white/10"
               >
                 <span class="text-lg text-white">{city.name}</span>
-                <span class="text-xs text-white/70">{city.date}</span>
-              </button>
+                <span class="text-xs text-white/70">{city.shortDate}</span>
+              </a>
             ))
           }
         </div>
@@ -116,23 +117,7 @@ const CITY_NAMES = Object.fromEntries(CITIES.map((c) => [c.slug, c.name]));
   </div>
 </header>
 
-{
-  /*
-  Sets the label during parse so a stored city never flashes as the default one.
-*/
-}
-<script is:inline define:vars={{ cityNames: CITY_NAMES }}>
-  (function () {
-    var name = cityNames[document.documentElement.dataset.city];
-    var label = document.querySelector("[data-city-label]");
-    if (name && label) label.textContent = name;
-  })();
-</script>
-
 <script>
-  import { cityBySlug } from "../data/cities";
-  import { activeCity, city, selectCity } from "../state";
-
   const mobileMenuToggle = document.querySelector<HTMLButtonElement>(
     "[data-mobile-menu-toggle]",
   );
@@ -164,39 +149,10 @@ const CITY_NAMES = Object.fromEntries(CITIES.map((c) => [c.slug, c.name]));
     if (chevron) chevron.classList.toggle("rotate-180", open);
   }
 
-  // Publish the resolved city into the store before anything subscribes, so
-  // every subscriber starts from the city the inline scripts already rendered
-  // rather than briefly seeing the default.
-  city.set(activeCity());
-
-  // Update button label when the city changes.
-  city.subscribe((selected) => {
-    const label = toggle?.querySelector("[data-city-label]");
-    if (label) label.textContent = selected.name;
-  });
-
   toggle?.addEventListener("click", (e) => {
     e.stopPropagation();
     setOpen(panel?.hidden ?? false);
   });
-
-  // Handle city selection: set state
-  document
-    .querySelectorAll<HTMLButtonElement>("[data-city-select]")
-    .forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const citySlug = btn.dataset.citySelect;
-        if (citySlug) {
-          const selectedCity = cityBySlug(citySlug);
-          if (selectedCity) {
-            // Persists the choice, which also hides the hint banner.
-            selectCity(selectedCity);
-            setOpen(false);
-          }
-        }
-      });
-    });
 
   document.addEventListener("mousedown", (e) => {
     if (root && !root.contains(e.target as Node)) setOpen(false);

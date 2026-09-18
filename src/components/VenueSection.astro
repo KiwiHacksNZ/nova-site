@@ -1,0 +1,90 @@
+---
+import type { City } from "../data/cities";
+
+interface Props {
+  city: City;
+  class?: string;
+}
+
+const { city, class: className = "" } = Astro.props;
+const { venue } = city;
+---
+
+<section class={`w-full ${className}`} aria-labelledby="venue-heading">
+  <h2
+    id="venue-heading"
+    class="text-center text-4xl font-semibold text-white sm:text-5xl"
+  >
+    Venue and schedule
+  </h2>
+
+  <div
+    class="mt-8 grid gap-5 text-left lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]"
+  >
+    {/* Venue card */}
+    <div class="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
+      <p class="text-sm font-semibold tracking-wide text-[#ff7ab3]">Where</p>
+      <p class="mt-3 text-2xl font-semibold text-white">{venue.name}</p>
+      <p class="mt-1 text-base text-white/85">{venue.address}</p>
+      <p class="text-base text-white/85">
+        {venue.locality}
+        {venue.postalCode}
+      </p>
+
+      <a
+        href={venue.mapUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#4f46e5] px-4 py-2 text-sm font-medium text-white no-underline transition-colors hover:bg-[#5b52ee]"
+      >
+        Open in Google Maps
+        <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
+          <path
+            d="M7 17L17 7M17 7H8m9 0v9"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </a>
+
+      <p class="mt-5 text-base leading-relaxed text-white/75">
+        {venue.gettingThere}
+      </p>
+
+      <p
+        class="mt-5 rounded-xl bg-[#5c2a42]/70 px-4 py-3 text-base leading-relaxed text-white"
+      >
+        {city.arriveBy}
+      </p>
+    </div>
+
+    {/* Schedule card */}
+    <div class="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
+      <p class="text-sm font-semibold tracking-wide text-[#ff7ab3]">
+        Running order
+      </p>
+      <div class="mt-4 space-y-6">
+        {
+          city.schedule.map((day) => (
+            <div>
+              <h3 class="text-lg font-semibold text-white">{day.day}</h3>
+              <dl class="mt-3 space-y-2">
+                {day.entries.map((entry) => (
+                  <div class="flex gap-4 border-b border-white/10 pb-2 last:border-0">
+                    <dt class="w-24 shrink-0 text-sm font-medium tabular-nums text-[#db74a8]">
+                      {entry.time}
+                    </dt>
+                    <dd class="text-sm leading-relaxed text-white/85">
+                      {entry.what}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
