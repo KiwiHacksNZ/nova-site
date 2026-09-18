@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/*
+ * Jua ships with ASCII and Korean only, so macron vowels (Ōtara, pōwhiri),
+ * curly quotes, the middle dot and the ellipsis used to fall back to Arial
+ * mid-sentence. scripts/patch-jua-font.py draws those marks in Jua's own
+ * weight; re-run it if this file is ever replaced or re-subsetted.
+ */
 @font-face {
   font-family: "Jua";
   src: url("/Jua-regular.woff2") format("woff2");
