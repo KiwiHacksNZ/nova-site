@@ -38,7 +38,7 @@ export const HYPE_TIERS: HypeTier[] = [
       "we are refreshing this page more often than you are.",
       "we have told our parents it is going well.",
       "statistically, you know someone. statistically.",
-      "kevin is watching.",
+      "Kevin is watching.",
     ],
   },
   {
@@ -48,7 +48,7 @@ export const HYPE_TIERS: HypeTier[] = [
       "we have stopped checking every ten minutes. mostly.",
       "enough to fill a table. a small table.",
       "this is a number now. it was not a number before.",
-      "idk what kevin is doing.",
+      "idk what Kevin is doing.",
     ],
   },
   {
@@ -58,7 +58,7 @@ export const HYPE_TIERS: HypeTier[] = [
       "an organiser has said the word logistics out loud.",
       "enough for a proper queue at the pizza.",
       "we have started describing the venue as cosy.",
-      "kevin has started paying attention.",
+      "Kevin has started paying attention.",
     ],
   },
   {
@@ -68,7 +68,7 @@ export const HYPE_TIERS: HypeTier[] = [
       "the venue booking has gone from optimistic to smug.",
       "somebody has drawn a seating plan. it is not going well.",
       "we are printing more name tags. this is a real sentence we typed.",
-      "kevin finds this number interesting.",
+      "Kevin finds this number interesting.",
     ],
   },
   {
@@ -78,7 +78,7 @@ export const HYPE_TIERS: HypeTier[] = [
       "the whiteboard is full. we have moved onto a window.",
       "this has stopped being a number and started being a problem. a good problem.",
       "we are so cooked. keep going.",
-      "kevin's call is important to you.",
+      "Kevin's call is important to you.",
     ],
   },
   {
@@ -88,7 +88,7 @@ export const HYPE_TIERS: HypeTier[] = [
       "the venue has been informed. the venue is coping.",
       "at this point just bring the entire school.",
       "we have run out of ways to say thank you, so: thanks.",
-      "kevin is impressed. which is unusual. kevin is never impressed.",
+      "Kevin is impressed. which is unusual. Kevin is never impressed.",
     ],
   },
 ];
