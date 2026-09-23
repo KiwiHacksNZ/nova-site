@@ -18,8 +18,8 @@ interface Props {
 
 const { city } = Astro.props;
 
-const title = `KiwiHacks Nova ${city.name} | Free 24-hour hackathon for high school students`;
-const description = `Join KiwiHacks Nova in ${city.name} on ${city.date} at ${city.venue.name}: a free, beginner-friendly 24-hour hackathon for New Zealand high school students aged 13 to 18.`;
+const title = `KiwiHacks Nova ${city.name} | Free ${city.hours}-hour hackathon for high school students`;
+const description = `Join KiwiHacks Nova in ${city.name} on ${city.date} at ${city.venue.name}: a free, beginner-friendly ${city.hours}-hour hackathon for New Zealand high school students aged 13 to 18.`;
 const url = `${SITE_URL}/${city.slug}`;
 ---
 

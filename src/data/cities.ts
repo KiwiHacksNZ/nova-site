@@ -41,6 +41,10 @@ export type City = {
   arriveBy: string;
   /** When the event finishes, for the pick-up line. */
   finishes: string;
+  /** Event length in hours, used in city-specific copy ("12-hour hackathon"). */
+  hours: number;
+  /** Whether attendees stay overnight. Drives the sleeping and packing copy. */
+  overnight: boolean;
   venue: Venue;
   /** Day-by-day running order, taken from the city attendee fact sheet. */
   schedule: { day: string; entries: ScheduleEntry[] }[];
@@ -57,12 +61,14 @@ export const CITIES: City[] = [
   {
     name: "Wellington",
     slug: "wellington",
-    date: "26 to 27 September 2026",
-    shortDate: "26 to 27 September",
-    startDate: "2026-09-26T10:30:00+12:00",
-    endDate: "2026-09-27T11:00:00+13:00",
-    arriveBy: "Arrive before 10:30am on Saturday to make the opening ceremony.",
-    finishes: "Sunday 27 September, 11:00am",
+    date: "Saturday 26 September 2026",
+    shortDate: "26 September",
+    startDate: "2026-09-26T08:00:00+12:00",
+    endDate: "2026-09-26T20:00:00+12:00",
+    arriveBy: "Arrive at 8:00am on Saturday to sign in before the opening ceremony.",
+    finishes: "Saturday 26 September, 8:00pm",
+    hours: 12,
+    overnight: false,
     venue: {
       name: "NEC House, Level 4",
       address: "40 Taranaki Street",
@@ -77,22 +83,15 @@ export const CITIES: City[] = [
       {
         day: "Saturday 26 September",
         entries: [
-          { time: "10:30am", what: "Opening ceremony and workshops" },
-          { time: "12:00pm", what: "Building starts" },
-          { time: "2:00pm", what: "Lunch" },
-          { time: "7:00pm", what: "Dinner" },
-          { time: "10:00pm", what: "Quiet building starts" },
-        ],
-      },
-      {
-        day: "Sunday 27 September",
-        entries: [
-          { time: "7:00am", what: "Wake up" },
-          { time: "8:00am", what: "Breakfast served" },
-          { time: "9:00am", what: "Project submission" },
-          { time: "10:00am", what: "Judges expo" },
-          { time: "10:30am", what: "Prizegiving" },
-          { time: "11:00am", what: "Closing ceremony" },
+          { time: "8:00am", what: "Doors open and sign-in" },
+          { time: "8:30am", what: "Opening ceremony and workshops" },
+          { time: "10:00am", what: "Building starts" },
+          { time: "12:30pm", what: "Lunch" },
+          { time: "5:00pm", what: "Dinner" },
+          { time: "6:00pm", what: "Project submission" },
+          { time: "6:30pm", what: "Judges expo" },
+          { time: "7:30pm", what: "Prizegiving and closing ceremony" },
+          { time: "8:00pm", what: "Pick-up" },
         ],
       },
     ],
@@ -110,6 +109,8 @@ export const CITIES: City[] = [
     endDate: "2026-10-03T18:00:00+13:00",
     arriveBy: "Arrive before 6:30pm on Friday to make the opening ceremony.",
     finishes: "Saturday 3 October, 6:00pm",
+    hours: 24,
+    overnight: true,
     venue: {
       name: "Partly HQ",
       address: "210 Armagh Street",
@@ -158,6 +159,8 @@ export const CITIES: City[] = [
     arriveBy:
       "Arrive before 9:00am on Friday for the pōwhiri, the formal welcome onto the marae.",
     finishes: "Saturday 10 October, 11:00am",
+    hours: 24,
+    overnight: true,
     venue: {
       name: "MIT Ngā Kete Wānanga Marae",
       address: "53 Otara Road",

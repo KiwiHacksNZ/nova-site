@@ -46,7 +46,7 @@ export function cityEventSchema(city: City) {
     "@type": "Event",
     "@id": `${url}#event`,
     name: `KiwiHacks Nova ${city.name} 2026`,
-    description: `A free, beginner-friendly 24-hour hackathon at ${fullAddress(city.venue)} for New Zealand high school students aged 13 to 18.`,
+    description: `A free, beginner-friendly ${city.hours}-hour hackathon at ${fullAddress(city.venue)} for New Zealand high school students aged 13 to 18.`,
     url,
     startDate: city.startDate,
     endDate: city.endDate,
