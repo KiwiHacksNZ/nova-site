@@ -64,14 +64,14 @@ export const CITIES: City[] = [
     arriveBy: "Arrive before 10:30am on Saturday to make the opening ceremony.",
     finishes: "Sunday 27 September, 11:00am",
     venue: {
-      name: "Potentia, Equinox House, Level 12",
-      address: "222 Lambton Quay",
-      locality: "Wellington CBD",
+      name: "NEC House, Level 4",
+      address: "40 Taranaki Street",
+      locality: "Te Aro, Wellington",
       postalCode: "6011",
       mapUrl:
-        "https://www.google.com/maps/search/?api=1&query=Equinox+House%2C+222+Lambton+Quay%2C+Wellington+CBD+6011",
+        "https://www.google.com/maps/search/?api=1&query=NEC+House%2C+40+Taranaki+Street%2C+Te+Aro%2C+Wellington+6011",
       gettingThere:
-        "On Lambton Quay in the CBD, a short walk from Wellington Railway Station and on most Wellington bus routes. There is paid street and building parking nearby for drop-off.",
+        "On Taranaki Street in Te Aro, a short walk from Courtenay Place and on most Wellington bus routes. There is paid street and building parking nearby for drop-off.",
     },
     schedule: [
       {
@@ -223,7 +223,7 @@ export function cityBySlug(slug: string): City | undefined {
 
 export const DEFAULT_CITY = cityBySlug(DEFAULT_CITY_SLUG)!;
 
-/** "Potentia, Equinox House, Level 12, 222 Lambton Quay, Wellington CBD 6011" */
+/** "NEC House, Level 4, 40 Taranaki Street, Te Aro, Wellington 6011" */
 export function fullAddress(venue: Venue): string {
   return `${venue.name}, ${venue.address}, ${venue.locality} ${venue.postalCode}`;
 }
