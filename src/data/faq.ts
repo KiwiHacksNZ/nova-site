@@ -70,9 +70,9 @@ export function faqItemsForCity(city: City): Faq[] {
     "What should I bring to the hackathon?": `A laptop and charger, any devices you want to build with, a water bottle, and a warm layer. Nova ${city.name} is a ${city.hours}-hour day event with no overnight stay, so there is no need for a sleeping bag. We cover the food, Wi-Fi, and the space.`,
     "What can I make at KiwiHacks Nova?": `Anything you can build in ${city.hours} hours: a game, a website, an app, a hardware project, or something completely unexpected. Every team leaves with a real project they built themselves.`,
   };
-  const shared = FAQ_ITEMS.filter((f) => f.q !== "Do I sleep at the venue?").map((f) =>
-    dayOverrides[f.q] ? { q: f.q, a: dayOverrides[f.q] } : f,
-  );
+  const shared = FAQ_ITEMS.filter(
+    (f) => f.q !== "Do I sleep at the venue?",
+  ).map((f) => (dayOverrides[f.q] ? { q: f.q, a: dayOverrides[f.q] } : f));
   return [...cityItems, ...shared];
 }
 

@@ -65,7 +65,8 @@ export const CITIES: City[] = [
     shortDate: "26 September",
     startDate: "2026-09-26T07:00:00+12:00",
     endDate: "2026-09-26T20:00:00+12:00",
-    arriveBy: "Arrive from 7:00am on Saturday to sign in before the 8:00am opening ceremony.",
+    arriveBy:
+      "Arrive from 7:00am on Saturday to sign in before the 8:00am opening ceremony.",
     finishes: "Saturday 26 September, 8:00pm",
     hours: 12,
     overnight: false,
