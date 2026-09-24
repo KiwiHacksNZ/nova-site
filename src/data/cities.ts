@@ -63,10 +63,10 @@ export const CITIES: City[] = [
     slug: "wellington",
     date: "Saturday 26 September 2026",
     shortDate: "26 September",
-    startDate: "2026-09-26T07:00:00+12:00",
+    startDate: "2026-09-26T07:30:00+12:00",
     endDate: "2026-09-26T20:00:00+12:00",
     arriveBy:
-      "Arrive from 7:00am on Saturday to sign in before the 8:00am opening ceremony.",
+      "Arrive from 7:30am on Saturday to sign in before the 8:00am opening ceremony.",
     finishes: "Saturday 26 September, 8:00pm",
     hours: 12,
     overnight: false,
@@ -84,7 +84,7 @@ export const CITIES: City[] = [
       {
         day: "Saturday 26 September",
         entries: [
-          { time: "7:00am", what: "Doors open and sign-in" },
+          { time: "7:30am", what: "Doors open and check-in" },
           { time: "8:00am", what: "Opening ceremony and workshops" },
           { time: "9:30am", what: "Building starts" },
           { time: "12:30pm", what: "Lunch" },
