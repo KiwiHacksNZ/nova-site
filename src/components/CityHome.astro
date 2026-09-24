@@ -44,7 +44,7 @@ const faqItems = nationalOverview ? FAQ_ITEMS : faqItemsForCity(city);
     {
       nationalOverview
         ? "New Zealand's free 24-hour hackathons for high school students"
-        : `${city.name}'s free 24-hour hackathon for high school students`
+        : `${city.name}'s free ${city.hours}-hour hackathon for high school students`
     }
   </h1>
 
@@ -90,19 +90,21 @@ const faqItems = nationalOverview ? FAQ_ITEMS : faqItemsForCity(city);
     >
       <p>
         KiwiHacks Nova is a constellation of three hackathons across New
-        Zealand. Three cities, three weekends, three free 24-hour hackathons for
-        high schoolers. A nova is a star that suddenly bursts bright, and
-        that&apos;s the idea: light up Wellington, Christchurch, and Auckland
-        with students building real things.
+        Zealand. Three cities, three weekends, three free hackathons for high
+        schoolers. A nova is a star that suddenly bursts bright, and that&apos;s
+        the idea: light up Wellington, Christchurch, and Auckland with students
+        building real things.
       </p>
       <p>
         Nova is a chance to meet new people, learn new skills, and build
         something you&apos;re actually proud of, whether that&apos;s an app, a
         game, a website, a hardware project, or something nobody has seen
-        before! You team up, you get 24 hours, and you ship. Mentors will be
-        around for the entire event, and beginner-friendly workshops mean you
-        don't need any prior experience to get started. Food, drinks, and swag
-        are all included, and everything is completely free!
+        before! You team up, you get {
+          nationalOverview ? "24 hours" : `${city.hours} hours`
+        }, and you ship. Mentors will be around for the entire event, and
+        beginner-friendly workshops mean you don't need any prior experience to
+        get started. Food, drinks, and swag are all included, and everything is
+        completely free!
       </p>
       <p>
         We're KiwiHacks, New Zealand&apos;s first high school hackathon club,
@@ -256,10 +258,13 @@ const faqItems = nationalOverview ? FAQ_ITEMS : faqItemsForCity(city);
       Safety
     </h2>
     <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-white/80">
-      Nova is overnight and closed-door, so this matters. Venues are supervised
-      around the clock at one staff member to every fifteen attendees, everyone
-      signs in and out, mentors and organisers are police-vetted, and there is
-      first aid on site.
+      {
+        nationalOverview || city.overnight
+          ? "Nova is overnight and closed-door, so this matters."
+          : "Nova is closed-door, so this matters."
+      } Venues are supervised around the clock at one staff member to every fifteen
+      attendees, everyone signs in and out, mentors and organisers are police-vetted,
+      and there is first aid on site.
     </p>
     <a
       href="/safety"
